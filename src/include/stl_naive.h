@@ -1,0 +1,6 @@
+#ifndef MERGEABLEHEAPS_STL_NAIVE_H
+#define MERGEABLEHEAPS_STL_NAIVE_H
+
+#include "iheap.h"
+
+#endif //MERGEABLEHEAPS_STL_NAIVE_H
