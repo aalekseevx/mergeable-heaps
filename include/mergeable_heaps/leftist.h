@@ -1,0 +1,6 @@
+#ifndef MERGEABLEHEAPS_LEFTIST_H
+#define MERGEABLEHEAPS_LEFTIST_H
+
+#include "iheap.h"
+
+#endif //MERGEABLEHEAPS_LEFTIST_H

@@ -1,0 +1,6 @@
+#ifndef MERGEABLEHEAPS_BINOMIAL_H
+#define MERGEABLEHEAPS_BINOMIAL_H
+
+#include "iheap.h"
+
+#endif //MERGEABLEHEAPS_BINOMIAL_H
