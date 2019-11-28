@@ -7,10 +7,13 @@ namespace heaps {
     template <class T>
     class LeftistHeap : public IHeap<T> {
     public:
+        explicit LeftistHeap (int key);
         void Insert(T x) override;
         int GetMinimum() override;
         void ExtractMinimum() override;
         void Merge(IHeap<T>& x) override;
+        void Initialise(int key) override;
+        size_t Size() override;
     };
 
     template<class T>
@@ -33,6 +36,21 @@ namespace heaps {
         {
             throw WrongHeapTypeException();
         }
+    }
+
+    template<class T>
+    void LeftistHeap<T>::Initialise(int key) {
+
+    }
+
+    template<class T>
+    LeftistHeap<T>::LeftistHeap(int key) {
+
+    }
+
+    template<class T>
+    size_t LeftistHeap<T>::Size() {
+
     }
 }
 

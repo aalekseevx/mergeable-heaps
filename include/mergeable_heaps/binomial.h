@@ -8,10 +8,13 @@ namespace heaps {
     template <class T>
     class BinomialHeap : public IHeap<T> {
     public:
+        explicit BinomialHeap (int key);
         void Insert(T x) override;
         int GetMinimum() override;
         void ExtractMinimum() override;
         void Merge(IHeap<T>& x) override;
+        void Initialise(int key) override;
+        size_t Size() override;
     };
 
     template<class T>
@@ -34,6 +37,21 @@ namespace heaps {
         {
             throw WrongHeapTypeException();
         }
+    }
+
+    template<class T>
+    void BinomialHeap<T>::Initialise(int key) {
+
+    }
+
+    template<class T>
+    BinomialHeap<T>::BinomialHeap(int key) {
+
+    }
+
+    template<class T>
+    size_t BinomialHeap<T>::Size() {
+
     }
 }
 

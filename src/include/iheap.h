@@ -4,10 +4,12 @@
 namespace heaps {
     template <class T>
     class IHeap {
+        virtual void Initialise(int key) = 0;
         virtual void Insert(T x) = 0;
         virtual int GetMinimum() = 0;
         virtual void ExtractMinimum() = 0;
         virtual void Merge(IHeap& x) = 0;
+        virtual size_t Size() = 0;
     };
 }
 
