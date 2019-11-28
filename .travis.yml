@@ -6,7 +6,7 @@ env:
     - LINUX_DIST=trusty
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
     # Global build options and C++ flags
-    - CXX_FLAGS="-Wall -pedantic -Werror -Wno-variadic-macros -Wno-long-long -Wno-shadow"
+    - CXX_FLAGS="-Wall -pedantic"
     # Misc
     - RUN_TESTS=true
     - COVERAGE=false
@@ -20,8 +20,8 @@ matrix:
       addons:
         apt:
           packages: &precise_latest_boost_packages
-            - gcc-4.8
-            - g++-4.8
+            - gcc-9.2
+            - g++-9.2
             #- gcov-4.9
             - clang-3.7
             - valgrind
