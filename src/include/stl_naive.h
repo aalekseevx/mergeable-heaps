@@ -6,16 +6,23 @@
 
 namespace heaps {
 
-    template <class T>
+    template<class T>
     class StlHeap : public IHeap<T> {
     public:
-        explicit StlHeap (int key);
+        explicit StlHeap(int key);
+
         std::set<T> elements_;
+
         void Insert(T x) override;
+
         int GetMinimum() override;
+
         void ExtractMinimum() override;
-        void Merge(IHeap<T>& x) override;
+
+        void Merge(IHeap <T> &x) override;
+
         void Initialise(int key) override;
+
         size_t Size() override;
     };
 
@@ -41,16 +48,15 @@ namespace heaps {
     }
 
     template<class T>
-    void StlHeap<T>::Merge(IHeap<T>& x) {
+    void StlHeap<T>::Merge(IHeap <T> &x) {
         if (&x == this) {
             return;
         }
         try {
-            auto x_casted = dynamic_cast<StlHeap<T>&>(x);
+            auto x_casted = dynamic_cast<StlHeap<T> &>(x);
             elements_.insert(x_casted.elements_.begin(), x_casted.elements_.end());
             x_casted.elements_.clear();
-        } catch(const std::bad_cast& e)
-        {
+        } catch (const std::bad_cast &e) {
             throw WrongHeapTypeException();
         }
     }

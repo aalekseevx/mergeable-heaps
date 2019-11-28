@@ -16,7 +16,9 @@ public:
     Func call;
     int key;
     int index[2];
+
     Action() = default;
+
     Action(size_t heaps_cnt) {
         static std::mt19937 gen;
         key = gen();
@@ -25,34 +27,36 @@ public:
             index[0] = index[1] = -1;
         } else {
             call = Func(static_cast<size_t>(gen()) % func_count);
-            for(int& i: index) {
+            for (int &i: index) {
                 i = static_cast<size_t>(gen()) % heaps_cnt;
             }
         }
     }
 };
 
-class TestCase: public ::testing::Test {
+class TestCase : public ::testing::Test {
 protected:
     void SetUp() override {
         actions_.resize(ACTIONS_CNT);
         int heaps_cnt = 0;
-        for (auto& i: actions_) {
+        for (auto &i: actions_) {
             i = Action(heaps_cnt);
             heaps_cnt += i.call == Func::AddHeap;
         }
     }
+
     void TearDown() override {}
+
     static const int ACTIONS_CNT = 10'000;
     std::vector<Action> actions_;
 };
 
-template <class T, class H>
-void TestAction (std::vector<T>& candidate_heaps,
-        std::vector<H>& correct_heaps,
-        Action action) {
+template<class T, class H>
+void TestAction(std::vector<T> &candidate_heaps,
+                std::vector<H> &correct_heaps,
+                Action action) {
 
-    switch(action.call) {
+    switch (action.call) {
         case Func::GetMinimum: {
             int candidate_answer = -1, correct_answer = -1;
             if (correct_heaps[action.index[0]].Size()) {
@@ -90,7 +94,8 @@ void TestAction (std::vector<T>& candidate_heaps,
     }
 }
 
-template <typename T> void TestHeap(const std::vector<Action>& actions_) {
+template<typename T>
+void TestHeap(const std::vector<Action> &actions_) {
     std::vector<T> candidate_heaps;
     std::vector<heaps::StlHeap<int>> correct_heaps;
     for (auto action: actions_) {
