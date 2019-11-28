@@ -46,33 +46,41 @@ protected:
     std::vector<Action> actions_;
 };
 
-template <class T>
-void TestAction (heaps::IHeap<T>& candidate, heaps::IHeap<T>& correct, Action action) {
-
+template <class T, class H>
+void TestAction (std::vector<T> candidate_heaps, std::vector<H> correct_heaps, Action action) {
+    switch(action.call) {
+        case Func::GetMinimum: {
+            int candidate_answer = -1, correct_answer = -1;
+            ASSERT_NO_THROW(candidate_answer = candidate_heaps[action.index[0]].GetMinimum());
+            ASSERT_NO_THROW(correct_answer = correct_heaps[action.index[1]].GetMinimum());
+            ASSERT_EQ(candidate_answer, correct_answer);
+            break;
+        }
+        case Func::AddHeap: {
+            ASSERT_NO_THROW(candidate_heaps.emplace_back());
+            ASSERT_NO_THROW(correct_heaps.emplace_back());
+            break;
+        }
+        case Func::ExtractMinimum: {
+            ASSERT_NO_THROW(candidate_heaps[action.index[0]].ExtractMinimum());
+            ASSERT_NO_THROW(correct_heaps[action.index[1]].ExtractMinimum());
+        }
+        case Func::Insert: {
+            ASSERT_NO_THROW(candidate_heaps[action.index[0]].Insert(action.key));
+            ASSERT_NO_THROW(correct_heaps[action.index[0]].Insert(action.key));
+        }
+        case Func::Merge: {
+            ASSERT_NO_THROW(candidate_heaps[action.index[0]].Merge(candidate_heaps[action.index[1]]));
+            ASSERT_NO_THROW(correct_heaps[action.index[0]].Merge(correct_heaps[action.index[1]]));
+        }
+    }
 }
 
 template <typename T> void TestHeap(const std::vector<Action>& actions_) {
     std::vector<T> candidate_heaps;
     std::vector<heaps::StlHeap<int>> correct_heaps;
     for (auto action: actions_) {
-        if (action.call == Func::GetMinimum) {
-            int candidate_answer = -1, correct_answer = -1;
-            ASSERT_NO_THROW(candidate_answer = candidate_heaps[action.index[0]].GetMinimum());
-            ASSERT_NO_THROW(correct_answer = correct_heaps[action.index[1]].GetMinimum());
-            ASSERT_EQ(candidate_answer, correct_answer);
-        } else if (action.call == Func::AddHeap) {
-            ASSERT_NO_THROW(candidate_heaps.emplace_back());
-            ASSERT_NO_THROW(correct_heaps.emplace_back());
-        } else if (action.call == Func::ExtractMinimum) {
-            ASSERT_NO_THROW(candidate_heaps[action.index[0]].ExtractMinimum());
-            ASSERT_NO_THROW(correct_heaps[action.index[1]].ExtractMinimum());
-        } else if (action.call == Func::Insert) {
-            ASSERT_NO_THROW(candidate_heaps[action.index[0]].Insert(action.key));
-            ASSERT_NO_THROW(correct_heaps[action.index[0]].Insert(action.key));
-        } else if (action.call == Func::Merge) {
-            ASSERT_NO_THROW(candidate_heaps[action.index[0]].Merge(candidate_heaps[action.index[1]]));
-            ASSERT_NO_THROW(correct_heaps[action.index[0]].Merge(correct_heaps[action.index[1]]));
-        }
+        TestAction<T>(candidate_heaps, correct_heaps, action);
     }
 }
 
