@@ -23,6 +23,6 @@ script:
   # Run your build commands next
   - mkdir -p build
   - cd build
-  - cmake
+  - cmake ..
   - make
   - ctest
