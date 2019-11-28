@@ -64,8 +64,8 @@ void TestAction(std::vector<T> &candidate_heaps,
                 ASSERT_NO_THROW(correct_answer = correct_heaps[action.index[0]].GetMinimum());
                 ASSERT_EQ(candidate_answer, correct_answer);
             } else {
-                ASSERT_THROW(candidate_answer = candidate_heaps[action.index[0]].GetMinimum(), EmptyHeapException);
-                ASSERT_THROW(correct_answer = correct_heaps[action.index[0]].GetMinimum(), EmptyHeapException);
+                ASSERT_THROW(candidate_answer = candidate_heaps[action.index[0]].GetMinimum(), heaps::EmptyHeapException);
+                ASSERT_THROW(correct_answer = correct_heaps[action.index[0]].GetMinimum(), heaps::EmptyHeapException);
             }
             break;
         }
@@ -79,8 +79,8 @@ void TestAction(std::vector<T> &candidate_heaps,
                 ASSERT_NO_THROW(candidate_heaps[action.index[0]].ExtractMinimum());
                 ASSERT_NO_THROW(correct_heaps[action.index[0]].ExtractMinimum());
             } else {
-                ASSERT_THROW(candidate_heaps[action.index[0]].ExtractMinimum(), EmptyHeapException);
-                ASSERT_THROW(correct_heaps[action.index[0]].ExtractMinimum(), EmptyHeapException);
+                ASSERT_THROW(candidate_heaps[action.index[0]].ExtractMinimum(), heaps::EmptyHeapException);
+                ASSERT_THROW(correct_heaps[action.index[0]].ExtractMinimum(), heaps::EmptyHeapException);
             }
         }
         case Func::Insert: {
