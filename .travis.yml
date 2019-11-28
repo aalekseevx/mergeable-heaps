@@ -3,6 +3,9 @@ sudo: required
 language: cpp
 compiler:
   - gcc
+env:
+  global:
+    - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
 addons:
   apt:
     sources:
