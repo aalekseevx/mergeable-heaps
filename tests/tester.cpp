@@ -19,11 +19,12 @@ public:
     Action() = default;
     Action(size_t heaps_cnt) {
         static std::mt19937 gen;
+        key = gen();
         if (heaps_cnt == 0) {
             call = Func::AddHeap;
+            index[0] = index[1] = -1;
         } else {
             call = Func(static_cast<size_t>(gen()) % func_count);
-            key = gen();
             for(int& i: index) {
                 i = static_cast<size_t>(gen()) % heaps_cnt;
             }
@@ -47,23 +48,36 @@ protected:
 };
 
 template <class T, class H>
-void TestAction (std::vector<T> candidate_heaps, std::vector<H> correct_heaps, Action action) {
+void TestAction (std::vector<T>& candidate_heaps,
+        std::vector<H>& correct_heaps,
+        Action action) {
+
     switch(action.call) {
         case Func::GetMinimum: {
             int candidate_answer = -1, correct_answer = -1;
-            ASSERT_NO_THROW(candidate_answer = candidate_heaps[action.index[0]].GetMinimum());
-            ASSERT_NO_THROW(correct_answer = correct_heaps[action.index[1]].GetMinimum());
-            ASSERT_EQ(candidate_answer, correct_answer);
+            if (correct_heaps[action.index[0]].Size()) {
+                ASSERT_NO_THROW(candidate_answer = candidate_heaps[action.index[0]].GetMinimum());
+                ASSERT_NO_THROW(correct_answer = correct_heaps[action.index[0]].GetMinimum());
+                ASSERT_EQ(candidate_answer, correct_answer);
+            } else {
+                ASSERT_THROW(candidate_answer = candidate_heaps[action.index[0]].GetMinimum(), EmptyHeapException);
+                ASSERT_THROW(correct_answer = correct_heaps[action.index[0]].GetMinimum(), EmptyHeapException);
+            }
             break;
         }
         case Func::AddHeap: {
-            ASSERT_NO_THROW(candidate_heaps.emplace_back());
-            ASSERT_NO_THROW(correct_heaps.emplace_back());
+            ASSERT_NO_THROW(candidate_heaps.emplace_back(action.key));
+            ASSERT_NO_THROW(correct_heaps.emplace_back(action.key));
             break;
         }
         case Func::ExtractMinimum: {
-            ASSERT_NO_THROW(candidate_heaps[action.index[0]].ExtractMinimum());
-            ASSERT_NO_THROW(correct_heaps[action.index[1]].ExtractMinimum());
+            if (correct_heaps[action.index[0]].Size()) {
+                ASSERT_NO_THROW(candidate_heaps[action.index[0]].ExtractMinimum());
+                ASSERT_NO_THROW(correct_heaps[action.index[0]].ExtractMinimum());
+            } else {
+                ASSERT_THROW(candidate_heaps[action.index[0]].ExtractMinimum(), EmptyHeapException);
+                ASSERT_THROW(correct_heaps[action.index[0]].ExtractMinimum(), EmptyHeapException);
+            }
         }
         case Func::Insert: {
             ASSERT_NO_THROW(candidate_heaps[action.index[0]].Insert(action.key));
@@ -84,18 +98,21 @@ template <typename T> void TestHeap(const std::vector<Action>& actions_) {
     }
 }
 
-TEST_F(TestCase, BinomialHeapTest) {
-    TestHeap<heaps::BinomialHeap<int>>(actions_);
-}
+//TEST_F(TestCase, BinomialHeapTest) {
+//    TestHeap<heaps::BinomialHeap<int>>(actions_);
+//}
+//
+//TEST_F(TestCase, LeftistHeapTest) {
+//    TestHeap<heaps::LeftistHeap<int>>(actions_);
+//}
+//
+//TEST_F(TestCase, SkewHeapTest) {
+//    TestHeap<heaps::SkewHeap<int>>(actions_);
+//}
 
-TEST_F(TestCase, LeftistHeapTest) {
-    TestHeap<heaps::LeftistHeap<int>>(actions_);
+TEST_F(TestCase, StlHeapTest) {
+    TestHeap<heaps::StlHeap<int>>(actions_);
 }
-
-TEST_F(TestCase, SkewHeapTest) {
-    TestHeap<heaps::SkewHeap<int>>(actions_);
-}
-
 
 int main(int argc, char *argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
