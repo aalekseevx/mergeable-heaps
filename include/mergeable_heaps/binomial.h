@@ -7,12 +7,21 @@
 namespace heaps {
     template<class T>
     class BinomialHeap : public IHeap<T> {
+    private:
+        struct Node {
+            T key;
+            Node* parent;
+            Node* sibling;
+            Node* child;
+            size_t degree;
+        };
+        Node* root;
     public:
         explicit BinomialHeap(int key);
 
         void Insert(T x) override;
 
-        int GetMinimum() override;
+        T GetMinimum() override;
 
         void ExtractMinimum() override;
 
@@ -28,7 +37,7 @@ namespace heaps {
     }
 
     template<class T>
-    int BinomialHeap<T>::GetMinimum() {
+    T BinomialHeap<T>::GetMinimum() {
     }
 
     template<class T>
@@ -46,12 +55,12 @@ namespace heaps {
 
     template<class T>
     void BinomialHeap<T>::Initialise(int key) {
-
+        root = new Node(key, nullptr, nullptr, nullptr, 0u);
     }
 
     template<class T>
     BinomialHeap<T>::BinomialHeap(int key) {
-
+        Initialise(key);
     }
 
     template<class T>

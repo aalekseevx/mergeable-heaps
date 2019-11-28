@@ -8,7 +8,7 @@ namespace heaps {
 
         virtual void Insert(T x) = 0;
 
-        virtual int GetMinimum() = 0;
+        virtual T GetMinimum() = 0;
 
         virtual void ExtractMinimum() = 0;
 

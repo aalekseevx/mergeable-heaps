@@ -11,7 +11,7 @@ namespace heaps {
 
         void Insert(T x) override;
 
-        int GetMinimum() override;
+        T GetMinimum() override;
 
         void ExtractMinimum() override;
 
@@ -27,7 +27,7 @@ namespace heaps {
     }
 
     template<class T>
-    int SkewHeap<T>::GetMinimum() {
+    T SkewHeap<T>::GetMinimum() {
     }
 
     template<class T>

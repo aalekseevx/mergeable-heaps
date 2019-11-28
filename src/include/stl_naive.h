@@ -15,7 +15,7 @@ namespace heaps {
 
         void Insert(T x) override;
 
-        int GetMinimum() override;
+        T GetMinimum() override;
 
         void ExtractMinimum() override;
 
@@ -32,7 +32,7 @@ namespace heaps {
     }
 
     template<class T>
-    int StlHeap<T>::GetMinimum() {
+    T StlHeap<T>::GetMinimum() {
         if (elements_.empty()) {
             throw EmptyHeapException();
         }
