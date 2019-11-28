@@ -36,7 +36,7 @@ namespace heaps {
         try {
             auto x_casted = dynamic_cast<StlHeap<T>&>(x);
             elements_.insert(x_casted.elements_.begin(), x_casted.elements_.end());
-            x.clear();
+            x_casted.elements_.clear();
         } catch(const std::bad_cast& e)
         {
             throw WrongHeapTypeException();
