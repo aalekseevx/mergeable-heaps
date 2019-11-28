@@ -82,23 +82,26 @@ void TestAction(std::vector<T> &candidate_heaps,
                 ASSERT_THROW(candidate_heaps[action.index[0]].ExtractMinimum(), heaps::EmptyHeapException);
                 ASSERT_THROW(correct_heaps[action.index[0]].ExtractMinimum(), heaps::EmptyHeapException);
             }
+            break;
         }
         case Func::Insert: {
             ASSERT_NO_THROW(candidate_heaps[action.index[0]].Insert(action.key));
             ASSERT_NO_THROW(correct_heaps[action.index[0]].Insert(action.key));
+            break;
         }
         case Func::Merge: {
             ASSERT_NO_THROW(candidate_heaps[action.index[0]].Merge(candidate_heaps[action.index[1]]));
             ASSERT_NO_THROW(correct_heaps[action.index[0]].Merge(correct_heaps[action.index[1]]));
+            break;
         }
     }
 }
 
 template<typename T>
-void TestHeap(const std::vector<Action> &actions_) {
+void TestHeap(const std::vector<Action> &actions) {
     std::vector<T> candidate_heaps;
     std::vector<heaps::StlHeap<int>> correct_heaps;
-    for (auto action: actions_) {
+    for (auto action: actions) {
         TestAction<T>(candidate_heaps, correct_heaps, action);
     }
 }
