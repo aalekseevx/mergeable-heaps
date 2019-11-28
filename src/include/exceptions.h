@@ -8,4 +8,11 @@ class WrongHeapTypeException : public std::exception {
     }
 };
 
+class EmptyHeapException : public std::exception {
+    [[nodiscard]] const char* what () const noexcept override
+    {
+        return "Can't access an element of an empty heap";
+    }
+};
+
 #endif //MERGEABLEHEAPS_EXCEPTIONS_H
