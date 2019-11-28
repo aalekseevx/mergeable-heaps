@@ -34,8 +34,9 @@ namespace heaps {
     template<class T>
     void StlHeap<T>::Merge(IHeap<T>& x) {
         try {
-            auto x_casted = dynamic_cast<StlHeap<T> &>(x);
+            auto x_casted = dynamic_cast<StlHeap<T>&>(x);
             elements_.insert(x_casted.elements_.begin(), x_casted.elements_.end());
+            x.clear();
         } catch(const std::bad_cast& e)
         {
             throw WrongHeapTypeException();
