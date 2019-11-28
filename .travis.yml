@@ -20,8 +20,8 @@ matrix:
       addons:
         apt:
           packages: &precise_latest_boost_packages
-            - gcc-9.2
-            - g++-9.2
+            - gcc-6
+            - g++-6
             #- gcov-4.9
             - clang-3.7
             - valgrind
