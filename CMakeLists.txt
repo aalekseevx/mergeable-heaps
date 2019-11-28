@@ -36,12 +36,13 @@ if (CMAKE_VERSION VERSION_LESS 2.8.11)
 endif()
 
 # Now simply link against gtest or gtest_main as needed. Eg
-add_executable(MergeableHeaps tests/tester.cpp)
-target_link_libraries(MergeableHeaps gtest_main)
-add_test(NAME main_test COMMAND MergeableHeaps)
+add_executable(RunUnutTests tests/tester.cpp)
+target_link_libraries(RunUnutTests gtest_main)
 
 # Link all libs
 include_directories(include)
 include_directories(src/include)
 file(GLOB SOURCES "src/*.cpp")
-add_executable(test ${SOURCES})
+
+enable_testing()
+add_test(NAME main_test COMMAND RunUnutTests)
