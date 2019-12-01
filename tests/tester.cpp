@@ -1,10 +1,8 @@
 #include <iostream>
 #include <random>
 #include <gtest/gtest.h>
-#include "mergeable_heaps/binomial.h"
-#include "mergeable_heaps/leftist.h"
-#include "mergeable_heaps/skew.h"
-#include "stl_naive.h"
+#include "mergeable_heaps/mergeable_heaps.h"
+#include "mergeable_heaps/exceptions.h"
 
 enum Func {
     AddHeap, Insert, GetMinimum, ExtractMinimum, Merge
@@ -100,13 +98,21 @@ void TestAction(std::vector<T> &candidate_heaps,
 template<typename T>
 void TestHeap(const std::vector<Action> &actions) {
     std::vector<T> candidate_heaps;
-    std::vector<heaps::StlHeap<int>> correct_heaps;
+    std::vector<heaps::Heap<int>> correct_heaps;
     for (auto action: actions) {
         TestAction<T>(candidate_heaps, correct_heaps, action);
     }
 }
 
 //TEST_F(TestCase, BinomialHeapTest) {
+//    heaps::BinomialHeap<int> g1(5), g2(-10), g3(7);
+//    ASSERT_EQ(g1.GetMinimum(), 5);
+//    ASSERT_EQ(g2.GetMinimum(), -10);
+//    ASSERT_EQ(g3.GetMinimum(), 7);
+//    g1.Merge(g2);
+//    ASSERT_EQ(g1.GetMinimum(), -10);
+//    g1.ExtractMinimum();
+//    ASSERT_EQ(g1.GetMinimum(), 5);
 //    TestHeap<heaps::BinomialHeap<int>>(actions_);
 //}
 //
@@ -119,7 +125,7 @@ void TestHeap(const std::vector<Action> &actions) {
 //}
 
 TEST_F(TestCase, StlHeapTest) {
-    TestHeap<heaps::StlHeap<int>>(actions_);
+    TestHeap<heaps::Heap<int>>(actions_);
 }
 
 int main(int argc, char *argv[]) {

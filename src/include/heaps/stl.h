@@ -2,12 +2,13 @@
 #define MERGEABLEHEAPS_STL_NAIVE_H
 
 #include "iheap.h"
-#include "exceptions.h"
+#include "mergeable_heaps/exceptions.h"
+#include "mergeable_heaps/mergeable_heaps.h"
 
 namespace heaps {
 
-    template<class T>
-    class StlHeap : public IHeap<T> {
+    template <class T, class Compare>
+    class Heap<T, STL, Compare> : public IHeap<T> {
     private:
         std::set<T> elements_;
         void Merge_(StlHeap <T> &x);
@@ -23,6 +24,8 @@ namespace heaps {
         void Merge(IHeap <T> &x) override;
 
         size_t Size() override;
+
+        bool Empty() override;
     };
 
     template<class T>
@@ -53,6 +56,7 @@ namespace heaps {
         }
         try {
             Merge_(dynamic_cast<StlHeap<T> &>(x));
+            x = StlHeap<T>();
         } catch (const std::bad_cast &e) {
             throw WrongHeapTypeException();
         }
@@ -71,7 +75,11 @@ namespace heaps {
     template<class T>
     void StlHeap<T>::Merge_(StlHeap<T> &x) {
         elements_.insert(x.elements_.begin(), x.elements_.end());
-        x.elements_.clear();
+    }
+
+    template<class T>
+    bool StlHeap<T>::Empty() {
+        return elements_.empty();
     }
 }
 

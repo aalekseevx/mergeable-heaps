@@ -2,7 +2,7 @@
 #define MERGEABLEHEAPS_IHEAP_H
 
 namespace heaps {
-    template<class T>
+    template<class T, class CompareFunction=std::less<T>>
     class IHeap {
         virtual void Insert(T x) = 0;
 
@@ -13,6 +13,8 @@ namespace heaps {
         virtual void Merge(IHeap &x) = 0;
 
         virtual size_t Size() = 0;
+
+        virtual bool Empty() = 0;
     };
 }
 
