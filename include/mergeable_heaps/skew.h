@@ -12,19 +12,15 @@ namespace heaps {
             Key key;
             Node *child_left;
             Node *child_right;
-            size_t size;
 
-            Node(Key key, Node *child_left, Node *child_right, size_t size);
-
-            void UpdateSize();
-
+            Node(Key key, Node *child_left, Node *child_right);
             static Node *Merge_(Node *root_1, Node *root_2);
         };
 
         Node *root;
+        size_t size;
 
         void Merge_(SkewHeap &x);
-
     public:
         SkewHeap();
 
@@ -41,6 +37,8 @@ namespace heaps {
         size_t Size() override;
 
         bool Empty() override;
+
+        void Detach() override;
     };
 
     template<class Key>
@@ -55,20 +53,12 @@ namespace heaps {
         Node *tmp_root = root_1->child_right;
         std::swap(root_1->child_left, root_1->child_right);
         root_1->child_left = Node::Merge_(tmp_root, root_2);
-        root_1->UpdateSize();
         return root_1;
     }
 
     template<class Key>
-    SkewHeap<Key>::Node::Node(Key key, SkewHeap::Node *child_left, SkewHeap::Node *child_right, size_t size) :
-            key(key), child_left(child_left), child_right(child_right), size(size) {}
-
-    template<class Key>
-    void SkewHeap<Key>::Node::UpdateSize() {
-        size = 1 +
-                (child_left == nullptr ? 0 : child_left->size) +
-                (child_right == nullptr ? 0 : child_right->size);
-    }
+    SkewHeap<Key>::Node::Node(Key key, SkewHeap::Node *child_left, SkewHeap::Node *child_right) :
+            key(key), child_left(child_left), child_right(child_right) {}
 
     template<class Key>
     void SkewHeap<Key>::Insert(Key x) {
@@ -103,19 +93,20 @@ namespace heaps {
         }
         try {
             Merge_(dynamic_cast<SkewHeap<Key> &>(x));
+            x.Detach();
         } catch (const std::bad_cast &e) {
             throw WrongHeapTypeException();
         }
     }
 
     template<class Key>
-    SkewHeap<Key>::SkewHeap(Key key) {
-        root = new Node(key, nullptr, nullptr, 1);
+    SkewHeap<Key>::SkewHeap(Key key) : size(1) {
+        root = new Node(key, nullptr, nullptr);
     }
 
     template<class Key>
     size_t SkewHeap<Key>::Size() {
-        return Empty() ? 0 : root->size;
+        return Empty() ? 0 : size;
     }
 
     template<class Key>
@@ -126,11 +117,16 @@ namespace heaps {
     template<class Key>
     void SkewHeap<Key>::Merge_(SkewHeap &x) {
         root = Node::Merge_(root, x.root);
-        x.root = nullptr;
     }
 
     template<class Key>
-    SkewHeap<Key>::SkewHeap() : root(nullptr) {}
+    SkewHeap<Key>::SkewHeap() : root(nullptr), size(0) {}
+
+    template<class Key>
+    void SkewHeap<Key>::Detach() {
+        root = nullptr;
+        size = 0;
+    }
 }
 
 #endif //MERGEABLEHEAPS_SKEW_H

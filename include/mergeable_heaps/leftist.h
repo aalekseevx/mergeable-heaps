@@ -12,17 +12,17 @@ namespace heaps {
             Key key;
             Node *child_left;
             Node *child_right;
-            size_t size;
             size_t rank;
 
-            Node(Key key, Node *child_left, Node *child_right, size_t size, size_t rank);
+            Node(Key key, Node *child_left, Node *child_right, size_t rank);
 
-            void UpdateStatistics();
+            void UpdateRank();
 
             static Node *Merge_(Node *root_1, Node *root_2);
         };
 
         Node *root;
+        size_t size;
     public:
         explicit LeftistHeap(Key key);
 
@@ -41,6 +41,8 @@ namespace heaps {
         bool Empty() override;
 
         void Merge_(LeftistHeap &x);
+
+        void Detach() override;
     };
 
     template<class Key>
@@ -53,41 +55,22 @@ namespace heaps {
             std::swap(root_1, root_2);
         }
 
-        if(root_1->child_left && root_1->key > root_1->child_left->key) {
-            assert(0);
-        }
-
-        if(root_1->child_right && root_1->key > root_1->child_right->key) {
-            assert(0);
-        }
-
         root_1->child_right = Merge_(root_1->child_right, root_2);
 
         if (root_1->child_left == nullptr || root_1->child_left->rank < root_1->child_right->rank) {
             std::swap(root_1->child_left, root_1->child_right);
         }
-        root_1->UpdateStatistics();
-
-        if(root_1->child_left && root_1->key > root_1->child_left->key) {
-            assert(0);
-        }
-
-        if(root_1->child_right && root_1->key > root_1->child_right->key) {
-            assert(0);
-        }
+        root_1->UpdateRank();
 
         return root_1;
     }
 
     template<class Key>
-    LeftistHeap<Key>::Node::Node(Key key, LeftistHeap::Node *child_left, LeftistHeap::Node *child_right, size_t size, size_t rank) :
-            key(key), child_left(child_left), child_right(child_right), size(size), rank(rank) {}
+    LeftistHeap<Key>::Node::Node(Key key, LeftistHeap::Node *child_left, LeftistHeap::Node *child_right, size_t rank) :
+            key(key), child_left(child_left), child_right(child_right), rank(rank) {}
 
     template<class Key>
-    void LeftistHeap<Key>::Node::UpdateStatistics() {
-        size = 1 +
-               (child_left == nullptr ? 0 : child_left->size) +
-               (child_right == nullptr ? 0 : child_right->size);
+    void LeftistHeap<Key>::Node::UpdateRank() {
         rank = 1 + std::min(
                 (child_left == nullptr ? 0 : child_left->rank),
                 (child_right == nullptr ? 0 : child_right->rank)
@@ -127,19 +110,20 @@ namespace heaps {
         }
         try {
             Merge_(dynamic_cast<LeftistHeap<Key> &>(x));
+            x.Detach();
         } catch (const std::bad_cast &e) {
             throw WrongHeapTypeException();
         }
     }
 
     template<class Key>
-    LeftistHeap<Key>::LeftistHeap(Key key) {
-        root = new Node(key, nullptr, nullptr, 1, 1);
+    LeftistHeap<Key>::LeftistHeap(Key key) : size(1) {
+        root = new Node(key, nullptr, nullptr, 1);
     }
 
     template<class Key>
     size_t LeftistHeap<Key>::Size() {
-        return Empty() ? 0 : root->size;
+        return Empty() ? 0 : size;
     }
 
     template<class Key>
@@ -150,11 +134,16 @@ namespace heaps {
     template<class Key>
     void LeftistHeap<Key>::Merge_(LeftistHeap &x) {
         root = Node::Merge_(root, x.root);
-        x.root = nullptr;
     }
 
     template<class Key>
-    LeftistHeap<Key>::LeftistHeap() : root(nullptr) {}
+    LeftistHeap<Key>::LeftistHeap() : root(nullptr), size(0) {}
+
+    template<class Key>
+    void LeftistHeap<Key>::Detach() {
+        root = nullptr;
+        size = 0;
+    }
 }
 
 #endif //MERGEABLEHEAPS_LEFTIST_H

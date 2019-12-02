@@ -4,6 +4,7 @@
 namespace heaps {
     template<class T>
     class IHeap {
+    public:
         virtual void Insert(T x) = 0;
 
         virtual T GetMinimum() = 0;
@@ -15,6 +16,8 @@ namespace heaps {
         virtual size_t Size() = 0;
 
         virtual bool Empty() = 0;
+
+        virtual void Detach() = 0;
     };
 }
 

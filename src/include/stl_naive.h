@@ -25,6 +25,8 @@ namespace heaps {
         size_t Size() override;
 
         bool Empty() override;
+
+        void Detach() override;
     };
 
     template<class Key>
@@ -79,6 +81,11 @@ namespace heaps {
     template<class Key>
     bool StlHeap<Key>::Empty() {
         return Size() == 0;
+    }
+
+    template<class Key>
+    void StlHeap<Key>::Detach() {
+
     }
 }
 
