@@ -4,57 +4,53 @@
 #include "iheap.h"
 
 namespace heaps {
-    template<class T>
-    class LeftistHeap : public IHeap<T> {
+    template<class Key=int>
+    class LeftistHeap : public IHeap<Key> {
     public:
-        explicit LeftistHeap(int key);
+        explicit LeftistHeap(Key key);
 
-        void Insert(T x) override;
+        void Insert(Key x) override;
 
-        T GetMinimum() override;
+        Key GetMinimum() override;
 
         void ExtractMinimum() override;
 
-        void Merge(IHeap <T> &x) override;
-
-        void Initialise(int key) override;
+        void Merge(IHeap <Key> &x) override;
 
         size_t Size() override;
     };
 
-    template<class T>
-    void LeftistHeap<T>::Insert(T x) {
+    template<class Key>
+    void LeftistHeap<Key>::Insert(Key x) {
     }
 
-    template<class T>
-    T LeftistHeap<T>::GetMinimum() {
+    template<class Key>
+    Key LeftistHeap<Key>::GetMinimum() {
     }
 
-    template<class T>
-    void LeftistHeap<T>::ExtractMinimum() {
+    template<class Key>
+    void LeftistHeap<Key>::ExtractMinimum() {
     }
 
-    template<class T>
-    void LeftistHeap<T>::Merge(IHeap <T> &x) {
+    template<class Key>
+    void LeftistHeap<Key>::Merge(IHeap <Key> &x) {
+        if (&x == this) {
+            return;
+        }
         try {
-            auto x_casted = dynamic_cast<LeftistHeap<T> &>(x);
+            Merge_(dynamic_cast<LeftistHeap<Key> &>(x));
         } catch (const std::bad_cast &e) {
             throw WrongHeapTypeException();
         }
     }
 
-    template<class T>
-    void LeftistHeap<T>::Initialise(int key) {
+    template<class Key>
+    LeftistHeap<Key>::LeftistHeap(Key key) {
 
     }
 
-    template<class T>
-    LeftistHeap<T>::LeftistHeap(int key) {
-
-    }
-
-    template<class T>
-    size_t LeftistHeap<T>::Size() {
+    template<class Key>
+    size_t LeftistHeap<Key>::Size() {
 
     }
 }
