@@ -99,7 +99,7 @@ namespace heaps {
     template<class Key>
     void SkewHeap<Key>::Merge(IHeap <Key> &x) {
         if (&x == this) {
-            return;
+            throw SelfHeapMerge();
         }
         try {
             Merge_(dynamic_cast<SkewHeap<Key> &>(x));

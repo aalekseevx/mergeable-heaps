@@ -38,6 +38,9 @@ namespace heaps {
 
     template<class T>
     void LeftistHeap<T>::Merge(IHeap <T> &x) {
+        if (&x == this) {
+            throw SelfHeapMerge();
+        }
         try {
             auto x_casted = dynamic_cast<LeftistHeap<T> &>(x);
         } catch (const std::bad_cast &e) {

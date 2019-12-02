@@ -13,6 +13,12 @@ namespace heaps {
             return "Can't access an element of an empty heap";
         }
     };
+
+    class SelfHeapMerge : public std::exception {
+        [[nodiscard]] const char *what() const noexcept override {
+            return "Can't merge a heap to itself. Please, make a copy";
+        }
+    };
 }
 
 #endif //MERGEABLEHEAPS_EXCEPTIONS_H

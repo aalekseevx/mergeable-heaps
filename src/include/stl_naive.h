@@ -2,7 +2,7 @@
 #define MERGEABLEHEAPS_STL_NAIVE_H
 
 #include "iheap.h"
-#include "exceptions.h"
+#include "mergeable_heaps/exceptions.h"
 
 namespace heaps {
 
@@ -51,7 +51,7 @@ namespace heaps {
     template<class Key>
     void StlHeap<Key>::Merge(IHeap <Key> &x) {
         if (&x == this) {
-            return;
+            throw SelfHeapMerge();
         }
         try {
             Merge_(dynamic_cast<StlHeap<Key> &>(x));

@@ -104,7 +104,7 @@ namespace heaps {
     template<class T>
     void BinomialHeap<T>::Merge(IHeap<T> &x) {
         if (&x == this) {
-            return;
+            throw SelfHeapMerge();
         }
         try {
             Merge_(dynamic_cast<BinomialHeap<T> &>(x));
