@@ -1,5 +1,5 @@
-#ifndef MERGEABLEHEAPS_LEFKeyISKey_H
-#define MERGEABLEHEAPS_LEFKeyISKey_H
+#ifndef MERGEABLEHEAPS_SKEW_H
+#define MERGEABLEHEAPS_SKEW_H
 
 #include "iheap.h"
 #include "exceptions.h"
@@ -133,4 +133,4 @@ namespace heaps {
     SkewHeap<Key>::SkewHeap() : root(nullptr) {}
 }
 
-#endif //MERGEABLEHEAPS_LEFKeyISKey_H
+#endif //MERGEABLEHEAPS_SKEW_H
