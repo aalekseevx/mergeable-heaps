@@ -36,8 +36,8 @@ if (CMAKE_VERSION VERSION_LESS 2.8.11)
 endif()
 
 # Now simply link against gtest or gtest_main as needed. Eg
-add_executable(RunUnutTests tests/tester.cpp)
-target_link_libraries(RunUnutTests gtest_main)
+add_executable(RunUnitTests tests/tester.cpp)
+target_link_libraries(RunUnitTests gtest_main)
 
 # Link all libs
 include_directories(include)
@@ -45,4 +45,4 @@ include_directories(src/include)
 file(GLOB SOURCES "src/*.cpp")
 
 enable_testing()
-add_test(NAME main_test COMMAND RunUnutTests)
+add_test(NAME main_test COMMAND RunUnitTests)

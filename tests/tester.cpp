@@ -113,18 +113,8 @@ void TestHeap(const std::vector<Action> &actions) {
 //TEST_F(TestCase, LeftistHeapTest) {
 //    TestHeap<heaps::LeftistHeap<int>>(actions_);
 //}
-//
+
 TEST_F(TestCase, SkewHeapTest) {
-//    heaps::SkewHeap x, y;
-//    x.Insert(10);
-//    x.Insert(10);
-//    x.Insert(10);
-//    x.Insert(10);
-//    x.ExtractMinimum();
-//    x.ExtractMinimum();
-//    x.ExtractMinimum();
-//    x.ExtractMinimum();
-//    ASSERT_TRUE(x.Empty());
     TestHeap<heaps::SkewHeap<int>>(actions_);
 }
 

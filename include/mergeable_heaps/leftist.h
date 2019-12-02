@@ -20,6 +20,8 @@ namespace heaps {
         void Initialise(int key) override;
 
         size_t Size() override;
+
+        bool Empty() override;
     };
 
     template<class T>
@@ -55,6 +57,11 @@ namespace heaps {
 
     template<class T>
     size_t LeftistHeap<T>::Size() {
+
+    }
+
+    template<class T>
+    bool LeftistHeap<T>::Empty() {
 
     }
 }

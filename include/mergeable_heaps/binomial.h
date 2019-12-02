@@ -52,6 +52,8 @@ namespace heaps {
         void Merge(IHeap<T> &x) override;
 
         size_t Size() override;
+
+        bool Empty() override;
     };
 
     template<class T>
@@ -212,6 +214,11 @@ namespace heaps {
         BinomialHeap heap;
         heap.root = v;
         return heap;
+    }
+
+    template<class T>
+    bool BinomialHeap<T>::Empty() {
+
     }
 }
 

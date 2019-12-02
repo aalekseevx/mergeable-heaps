@@ -13,6 +13,8 @@ namespace heaps {
         virtual void Merge(IHeap &x) = 0;
 
         virtual size_t Size() = 0;
+
+        virtual bool Empty() = 0;
     };
 }
 
