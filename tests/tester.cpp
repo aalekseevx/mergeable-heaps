@@ -47,7 +47,7 @@ protected:
 
     void TearDown() override {}
 
-    static const int ACTIONS_CNT = 10000;
+    static const int ACTIONS_CNT = 100'000;
     std::vector<Action> actions_;
 };
 
@@ -122,9 +122,9 @@ void TestHeap(const std::vector<Action> &actions) {
 //    TestHeap<heaps::BinomialHeap<int>>(actions_);
 //}
 //
-//TEST_F(TestCase, LeftistHeapTest) {
-//    TestHeap<heaps::LeftistHeap<int>>(actions_);
-//}
+TEST_F(TestCase, LeftistHeapTest) {
+    TestHeap<heaps::LeftistHeap<int>>(actions_);
+}
 
 TEST_F(TestCase, SkewHeapTest) {
     TestHeap<heaps::SkewHeap<int>>(actions_);
