@@ -6,74 +6,79 @@
 
 namespace heaps {
 
-    template<class T>
-    class StlHeap : public IHeap<T> {
+    template<class Key>
+    class StlHeap : public IHeap<Key> {
+    private:
+        std::multiset<Key> elements_;
+        void Merge_(StlHeap <Key> &x);
     public:
         explicit StlHeap(int key);
 
-        std::set<T> elements_;
+        void Insert(Key x) override;
 
-        void Insert(T x) override;
-
-        int GetMinimum() override;
+        Key GetMinimum() override;
 
         void ExtractMinimum() override;
 
-        void Merge(IHeap <T> &x) override;
-
-        void Initialise(int key) override;
+        void Merge(IHeap <Key> &x) override;
 
         size_t Size() override;
+
+        bool Empty() override;
     };
 
-    template<class T>
-    void StlHeap<T>::Insert(T x) {
+    template<class Key>
+    void StlHeap<Key>::Insert(Key x) {
         elements_.insert(x);
     }
 
-    template<class T>
-    int StlHeap<T>::GetMinimum() {
-        if (elements_.empty()) {
+    template<class Key>
+    Key StlHeap<Key>::GetMinimum() {
+        if (Empty()) {
             throw EmptyHeapException();
         }
         return *elements_.begin();
     }
 
-    template<class T>
-    void StlHeap<T>::ExtractMinimum() {
+    template<class Key>
+    void StlHeap<Key>::ExtractMinimum() {
         if (elements_.empty()) {
             throw EmptyHeapException();
         }
         elements_.erase(elements_.begin());
     }
 
-    template<class T>
-    void StlHeap<T>::Merge(IHeap <T> &x) {
+    template<class Key>
+    void StlHeap<Key>::Merge(IHeap <Key> &x) {
         if (&x == this) {
             return;
         }
         try {
-            auto x_casted = dynamic_cast<StlHeap<T> &>(x);
-            elements_.insert(x_casted.elements_.begin(), x_casted.elements_.end());
-            x_casted.elements_.clear();
+            Merge_(dynamic_cast<StlHeap<Key> &>(x));
         } catch (const std::bad_cast &e) {
             throw WrongHeapTypeException();
         }
     }
 
-    template<class T>
-    void StlHeap<T>::Initialise(int key) {
+    template<class Key>
+    StlHeap<Key>::StlHeap(int key) {
         elements_.insert(key);
     }
 
-    template<class T>
-    StlHeap<T>::StlHeap(int key) {
-        Initialise(key);
+    template<class Key>
+    size_t StlHeap<Key>::Size() {
+        return elements_.size();
     }
 
-    template<class T>
-    size_t StlHeap<T>::Size() {
-        return elements_.size();
+    template<class Key>
+    void StlHeap<Key>::Merge_(StlHeap<Key> &x) {
+        elements_.insert(x.elements_.begin(), x.elements_.end());
+        x.elements_.clear();
+    }
+
+    template<class Key>
+    bool StlHeap<Key>::Empty() {
+        return Size() == 0;
     }
 }
 

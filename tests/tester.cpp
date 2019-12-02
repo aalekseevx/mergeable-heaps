@@ -1,10 +1,10 @@
-#include <iostream>
 #include <random>
 #include <gtest/gtest.h>
 #include "mergeable_heaps/binomial.h"
-#include "mergeable_heaps/leftist.h"
 #include "mergeable_heaps/skew.h"
+#include "mergeable_heaps/leftist.h"
 #include "stl_naive.h"
+#include "exceptions.h"
 
 enum Func {
     AddHeap, Insert, GetMinimum, ExtractMinimum, Merge
@@ -47,7 +47,7 @@ protected:
 
     void TearDown() override {}
 
-    static const int ACTIONS_CNT = 10'000;
+    static const int ACTIONS_CNT = 10000;
     std::vector<Action> actions_;
 };
 
@@ -114,9 +114,19 @@ void TestHeap(const std::vector<Action> &actions) {
 //    TestHeap<heaps::LeftistHeap<int>>(actions_);
 //}
 //
-//TEST_F(TestCase, SkewHeapTest) {
-//    TestHeap<heaps::SkewHeap<int>>(actions_);
-//}
+TEST_F(TestCase, SkewHeapTest) {
+//    heaps::SkewHeap x, y;
+//    x.Insert(10);
+//    x.Insert(10);
+//    x.Insert(10);
+//    x.Insert(10);
+//    x.ExtractMinimum();
+//    x.ExtractMinimum();
+//    x.ExtractMinimum();
+//    x.ExtractMinimum();
+//    ASSERT_TRUE(x.Empty());
+    TestHeap<heaps::SkewHeap<int>>(actions_);
+}
 
 TEST_F(TestCase, StlHeapTest) {
     TestHeap<heaps::StlHeap<int>>(actions_);
