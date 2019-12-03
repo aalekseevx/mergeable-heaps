@@ -14,13 +14,30 @@ namespace heaps {
             Node *child_right;
 
             Node(Key key, Node *child_left, Node *child_right);
+
             static Node *Merge_(Node *root_1, Node *root_2);
+
+            void Detach();
+
+            // Rule of Five functions
+            ~Node();
+
+            Node(const Node &other);
+
+            Node(Node &&other) noexcept;
+
+            const Node &operator=(const Node &other);
+
+            const Node &operator=(Node &&other) noexcept;
+
+            void Swap(Node &x) noexcept;
         };
 
         Node *root;
         size_t size;
 
         void Merge_(SkewHeap &x);
+
     public:
         SkewHeap();
 
@@ -39,7 +56,72 @@ namespace heaps {
         bool Empty() override;
 
         void Detach() override;
+
+        // Rule of Five functions
+        ~SkewHeap<Key>();
+
+        SkewHeap<Key>(const SkewHeap<Key> &other);
+
+        SkewHeap<Key>(SkewHeap<Key> &&other) noexcept;
+
+        const SkewHeap<Key> &operator=(const SkewHeap<Key> &other);
+
+        const SkewHeap<Key> &operator=(SkewHeap<Key> &&other) noexcept;
+
+        void Swap(SkewHeap<Key> &x) noexcept;
     };
+
+    // Destructor
+    template<class Key>
+    SkewHeap<Key>::Node::~Node() {
+        if (child_left != nullptr) {
+            delete child_left;
+        }
+        if (child_right != nullptr) {
+            delete child_right;
+        }
+    }
+
+    // Copy constructor
+    template<class Key>
+    SkewHeap<Key>::Node::Node(const SkewHeap::Node &other) : key(other.key), child_left(child_left),
+                                                             child_right(child_right) {
+        if (child_left != nullptr) {
+            child_left = new Node(*child_left);
+        }
+        if (child_right != nullptr) {
+            child_right = new Node(*child_right);
+        }
+    }
+
+    // Move constructor
+    template<class Key>
+    SkewHeap<Key>::Node::Node(SkewHeap::Node &&other) noexcept {
+        child_right = child_left = nullptr;
+        key = 0;
+        Swap(other);
+    }
+
+    // Copy assignment operator
+    template<class Key>
+    const typename SkewHeap<Key>::Node &SkewHeap<Key>::Node::operator=(const SkewHeap::Node &other) {
+        if (this != &other) {
+            Node tmp(other);
+            Swap(tmp);
+        }
+        return *this;
+    }
+
+    // Move assignment operator
+    template<class Key>
+    const typename SkewHeap<Key>::Node &SkewHeap<Key>::Node::operator=(SkewHeap::Node &&other) noexcept {
+        if (this != &other) {
+            child_left = child_right = nullptr;
+            key = 0;
+            Swap(other);
+        }
+        return *this;
+    }
 
     template<class Key>
     typename SkewHeap<Key>::Node *
@@ -59,6 +141,18 @@ namespace heaps {
     template<class Key>
     SkewHeap<Key>::Node::Node(Key key, SkewHeap::Node *child_left, SkewHeap::Node *child_right) :
             key(key), child_left(child_left), child_right(child_right) {}
+
+    template<class Key>
+    void SkewHeap<Key>::Node::Swap(SkewHeap::Node &x) noexcept {
+        std::swap(child_left, x.child_left);
+        std::swap(child_right, x.child_right);
+        std::swap(key, x.key);
+    }
+
+    template<class Key>
+    void SkewHeap<Key>::Node::Detach() {
+        child_left = child_right = nullptr;
+    }
 
     template<class Key>
     void SkewHeap<Key>::Insert(Key x) {
@@ -81,6 +175,7 @@ namespace heaps {
         } else {
             Node *left = root->child_left;
             Node *right = root->child_right;
+            root->Detach();
             delete root;
             root = Node::Merge_(left, right);
         }
@@ -126,6 +221,53 @@ namespace heaps {
     void SkewHeap<Key>::Detach() {
         root = nullptr;
         size = 0;
+    }
+
+    // Destructor
+    template<class Key>
+    SkewHeap<Key>::~SkewHeap<Key>() {
+        if (root != nullptr) {
+            delete root;
+        }
+    }
+
+    // Copy constructor
+    template<class Key>
+    SkewHeap<Key>::SkewHeap(const SkewHeap<Key> &other) : size(other.size), root(other.root) {}
+
+    // Move constructor
+    template<class Key>
+    SkewHeap<Key>::SkewHeap(SkewHeap<Key> &&other) noexcept {
+        root = nullptr;
+        size = 0;
+        Swap(other);
+    }
+
+    // Copy assignment operator
+    template<class Key>
+    const SkewHeap<Key> &SkewHeap<Key>::operator=(const SkewHeap<Key> &other) {
+        if (this != &other) {
+            SkewHeap tmp(other);
+            Swap(tmp);
+        }
+        return *this;
+    }
+
+    // Move assignment operator
+    template<class Key>
+    const SkewHeap<Key> &SkewHeap<Key>::operator=(SkewHeap<Key> &&other) noexcept {
+        if (this != &other) {
+            root = nullptr;
+            size = 0;
+            Swap(other);
+        }
+        return *this;
+    }
+
+    template<class Key>
+    void SkewHeap<Key>::Swap(SkewHeap<Key> &x) noexcept {
+        std::swap(root, x.root);
+        std::swap(size, x.size);
     }
 }
 

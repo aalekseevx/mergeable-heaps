@@ -19,6 +19,21 @@ namespace heaps {
             void UpdateRank();
 
             static Node *Merge_(Node *root_1, Node *root_2);
+            
+            void Detach();
+
+            // Rule of Five functions
+            ~Node();
+
+            Node(const Node &other);
+
+            Node(Node &&other) noexcept;
+
+            const Node &operator=(const Node &other);
+
+            const Node &operator=(Node &&other) noexcept;
+
+            void Swap(Node &x) noexcept;
         };
 
         Node *root;
@@ -43,7 +58,72 @@ namespace heaps {
         void Merge_(LeftistHeap &x);
 
         void Detach() override;
+
+        // Rule of Five functions
+        ~LeftistHeap<Key>();
+
+        LeftistHeap<Key>(const LeftistHeap<Key> &other);
+
+        LeftistHeap<Key>(LeftistHeap<Key> &&other) noexcept;
+
+        const LeftistHeap<Key> &operator=(const LeftistHeap<Key> &other);
+
+        const LeftistHeap<Key> &operator=(LeftistHeap<Key> &&other) noexcept;
+
+        void Swap(LeftistHeap<Key> &x) noexcept;
     };
+
+    // Destructor
+    template<class Key>
+    LeftistHeap<Key>::Node::~Node() {
+        if (child_left != nullptr) {
+            delete child_left;
+        }
+        if (child_right != nullptr) {
+            delete child_right;
+        }
+    }
+
+    // Copy constructor
+    template<class Key>
+    LeftistHeap<Key>::Node::Node(const LeftistHeap::Node &other) : key(other.key), child_left(child_left),
+                                                             child_right(child_right) {
+        if (child_left != nullptr) {
+            child_left = new Node(*child_left);
+        }
+        if (child_right != nullptr) {
+            child_right = new Node(*child_right);
+        }
+    }
+
+    // Move constructor
+    template<class Key>
+    LeftistHeap<Key>::Node::Node(LeftistHeap::Node &&other) noexcept {
+        child_right = child_left = nullptr;
+        key = rank = 0;
+        Swap(other);
+    }
+
+    // Copy assignment operator
+    template<class Key>
+    const typename LeftistHeap<Key>::Node &LeftistHeap<Key>::Node::operator=(const LeftistHeap::Node &other) {
+        if (this != &other) {
+            Node tmp(other);
+            Swap(tmp);
+        }
+        return *this;
+    }
+
+    // Move assignment operator
+    template<class Key>
+    const typename LeftistHeap<Key>::Node &LeftistHeap<Key>::Node::operator=(LeftistHeap::Node &&other) noexcept {
+        if (this != &other) {
+            child_left = child_right = nullptr;
+            key = rank = 0;
+            Swap(other);
+        }
+        return *this;
+    }
 
     template<class Key>
     typename LeftistHeap<Key>::Node *
@@ -98,6 +178,7 @@ namespace heaps {
         } else {
             Node *left = root->child_left;
             Node *right = root->child_right;
+            root->Detach();
             delete root;
             root = Node::Merge_(left, right);
         }
@@ -143,6 +224,66 @@ namespace heaps {
     void LeftistHeap<Key>::Detach() {
         root = nullptr;
         size = 0;
+    }
+
+    // Destructor
+    template<class Key>
+    LeftistHeap<Key>::~LeftistHeap<Key>() {
+        if (root != nullptr) {
+            delete root;
+        }
+    }
+
+    // Copy constructor
+    template<class Key>
+    LeftistHeap<Key>::LeftistHeap(const LeftistHeap<Key> &other) : size(other.size), root(other.root) {}
+
+    // Move constructor
+    template<class Key>
+    LeftistHeap<Key>::LeftistHeap(LeftistHeap<Key> &&other) noexcept {
+        root = nullptr;
+        size = 0;
+        Swap(other);
+    }
+
+    // Copy assignment operator
+    template<class Key>
+    const LeftistHeap<Key> &LeftistHeap<Key>::operator=(const LeftistHeap<Key> &other) {
+        if (this != &other) {
+            LeftistHeap tmp(other);
+            Swap(tmp);
+        }
+        return *this;
+    }
+
+    // Move assignment operator
+    template<class Key>
+    const LeftistHeap<Key> &LeftistHeap<Key>::operator=(LeftistHeap<Key> &&other) noexcept {
+        if (this != &other) {
+            root = nullptr;
+            size = 0;
+            Swap(other);
+        }
+        return *this;
+    }
+
+    template<class Key>
+    void LeftistHeap<Key>::Swap(LeftistHeap<Key> &x) noexcept {
+        std::swap(root, x.root);
+        std::swap(size, x.size);
+    }
+
+    template<class Key>
+    void LeftistHeap<Key>::Node::Swap(LeftistHeap::Node &x) noexcept {
+        std::swap(child_left, x.child_left);
+        std::swap(child_right, x.child_right);
+        std::swap(key, x.key);
+        std::swap(rank, x.rank);
+    }
+
+    template<class Key>
+    void LeftistHeap<Key>::Node::Detach() {
+        child_left = child_right = nullptr;
     }
 }
 
