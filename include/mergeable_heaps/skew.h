@@ -84,8 +84,8 @@ namespace heaps {
 
     // Copy constructor
     template<class Key>
-    SkewHeap<Key>::Node::Node(const SkewHeap::Node &other) : key(other.key), child_left(child_left),
-                                                             child_right(child_right) {
+    SkewHeap<Key>::Node::Node(const SkewHeap::Node &other) : key(other.key), child_left(other.child_left),
+                                                             child_right(other.child_right) {
         if (child_left != nullptr) {
             child_left = new Node(*child_left);
         }
@@ -233,7 +233,7 @@ namespace heaps {
 
     // Copy constructor
     template<class Key>
-    SkewHeap<Key>::SkewHeap(const SkewHeap<Key> &other) : size(other.size), root(other.root) {}
+    SkewHeap<Key>::SkewHeap(const SkewHeap<Key> &other) : size(other.size), root(new Node(*other.root)) {}
 
     // Move constructor
     template<class Key>

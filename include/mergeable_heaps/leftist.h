@@ -86,8 +86,8 @@ namespace heaps {
 
     // Copy constructor
     template<class Key>
-    LeftistHeap<Key>::Node::Node(const LeftistHeap::Node &other) : key(other.key), child_left(child_left),
-                                                                   child_right(child_right), rank(rank) {
+    LeftistHeap<Key>::Node::Node(const LeftistHeap::Node &other) : key(other.key), child_left(other.child_left),
+                                                                   child_right(other.child_right), rank(other.rank) {
         if (child_left != nullptr) {
             child_left = new Node(*child_left);
         }
@@ -236,7 +236,7 @@ namespace heaps {
 
     // Copy constructor
     template<class Key>
-    LeftistHeap<Key>::LeftistHeap(const LeftistHeap<Key> &other) : size(other.size), root(other.root) {}
+    LeftistHeap<Key>::LeftistHeap(const LeftistHeap<Key> &other) : size(other.size), root(new Node(*other.root)) {}
 
     // Move constructor
     template<class Key>
