@@ -26,9 +26,9 @@ namespace heaps {
 
             Node(Node &&other) noexcept;
 
-            const Node &operator=(const Node &other);
+            Node &operator=(const Node &other);
 
-            const Node &operator=(Node &&other) noexcept;
+            Node &operator=(Node &&other) noexcept;
 
             void Swap(Node &x) noexcept;
         };
@@ -64,9 +64,9 @@ namespace heaps {
 
         SkewHeap<Key>(SkewHeap<Key> &&other) noexcept;
 
-        const SkewHeap<Key> &operator=(const SkewHeap<Key> &other);
+        SkewHeap<Key> &operator=(const SkewHeap<Key> &other);
 
-        const SkewHeap<Key> &operator=(SkewHeap<Key> &&other) noexcept;
+        SkewHeap<Key> &operator=(SkewHeap<Key> &&other) noexcept;
 
         void Swap(SkewHeap<Key> &x) noexcept;
     };
@@ -104,7 +104,7 @@ namespace heaps {
 
     // Copy assignment operator
     template<class Key>
-    const typename SkewHeap<Key>::Node &SkewHeap<Key>::Node::operator=(const SkewHeap::Node &other) {
+    typename SkewHeap<Key>::Node &SkewHeap<Key>::Node::operator=(const SkewHeap::Node &other) {
         if (this != &other) {
             Node tmp(other);
             Swap(tmp);
@@ -114,7 +114,7 @@ namespace heaps {
 
     // Move assignment operator
     template<class Key>
-    const typename SkewHeap<Key>::Node &SkewHeap<Key>::Node::operator=(SkewHeap::Node &&other) noexcept {
+    typename SkewHeap<Key>::Node &SkewHeap<Key>::Node::operator=(SkewHeap::Node &&other) noexcept {
         if (this != &other) {
             child_left = child_right = nullptr;
             key = 0;
@@ -245,7 +245,7 @@ namespace heaps {
 
     // Copy assignment operator
     template<class Key>
-    const SkewHeap<Key> &SkewHeap<Key>::operator=(const SkewHeap<Key> &other) {
+    SkewHeap<Key> &SkewHeap<Key>::operator=(const SkewHeap<Key> &other) {
         if (this != &other) {
             SkewHeap tmp(other);
             Swap(tmp);
@@ -255,7 +255,7 @@ namespace heaps {
 
     // Move assignment operator
     template<class Key>
-    const SkewHeap<Key> &SkewHeap<Key>::operator=(SkewHeap<Key> &&other) noexcept {
+    SkewHeap<Key> &SkewHeap<Key>::operator=(SkewHeap<Key> &&other) noexcept {
         if (this != &other) {
             root = nullptr;
             size = 0;

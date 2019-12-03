@@ -19,7 +19,7 @@ namespace heaps {
             void UpdateRank();
 
             static Node *Merge_(Node *root_1, Node *root_2);
-            
+
             void Detach();
 
             // Rule of Five functions
@@ -29,9 +29,9 @@ namespace heaps {
 
             Node(Node &&other) noexcept;
 
-            const Node &operator=(const Node &other);
+            Node &operator=(const Node &other);
 
-            const Node &operator=(Node &&other) noexcept;
+            Node &operator=(Node &&other) noexcept;
 
             void Swap(Node &x) noexcept;
         };
@@ -66,9 +66,9 @@ namespace heaps {
 
         LeftistHeap<Key>(LeftistHeap<Key> &&other) noexcept;
 
-        const LeftistHeap<Key> &operator=(const LeftistHeap<Key> &other);
+        LeftistHeap<Key> &operator=(const LeftistHeap<Key> &other);
 
-        const LeftistHeap<Key> &operator=(LeftistHeap<Key> &&other) noexcept;
+        LeftistHeap<Key> &operator=(LeftistHeap<Key> &&other) noexcept;
 
         void Swap(LeftistHeap<Key> &x) noexcept;
     };
@@ -87,7 +87,7 @@ namespace heaps {
     // Copy constructor
     template<class Key>
     LeftistHeap<Key>::Node::Node(const LeftistHeap::Node &other) : key(other.key), child_left(child_left),
-                                                             child_right(child_right) {
+                                                                   child_right(child_right), rank(rank) {
         if (child_left != nullptr) {
             child_left = new Node(*child_left);
         }
@@ -106,7 +106,7 @@ namespace heaps {
 
     // Copy assignment operator
     template<class Key>
-    const typename LeftistHeap<Key>::Node &LeftistHeap<Key>::Node::operator=(const LeftistHeap::Node &other) {
+    typename LeftistHeap<Key>::Node &LeftistHeap<Key>::Node::operator=(const LeftistHeap::Node &other) {
         if (this != &other) {
             Node tmp(other);
             Swap(tmp);
@@ -116,7 +116,7 @@ namespace heaps {
 
     // Move assignment operator
     template<class Key>
-    const typename LeftistHeap<Key>::Node &LeftistHeap<Key>::Node::operator=(LeftistHeap::Node &&other) noexcept {
+    typename LeftistHeap<Key>::Node &LeftistHeap<Key>::Node::operator=(LeftistHeap::Node &&other) noexcept {
         if (this != &other) {
             child_left = child_right = nullptr;
             key = rank = 0;
@@ -154,7 +154,7 @@ namespace heaps {
         rank = 1 + std::min(
                 (child_left == nullptr ? 0 : child_left->rank),
                 (child_right == nullptr ? 0 : child_right->rank)
-                );
+        );
     }
 
     template<class Key>
@@ -248,7 +248,7 @@ namespace heaps {
 
     // Copy assignment operator
     template<class Key>
-    const LeftistHeap<Key> &LeftistHeap<Key>::operator=(const LeftistHeap<Key> &other) {
+    LeftistHeap<Key> &LeftistHeap<Key>::operator=(const LeftistHeap<Key> &other) {
         if (this != &other) {
             LeftistHeap tmp(other);
             Swap(tmp);
@@ -258,7 +258,7 @@ namespace heaps {
 
     // Move assignment operator
     template<class Key>
-    const LeftistHeap<Key> &LeftistHeap<Key>::operator=(LeftistHeap<Key> &&other) noexcept {
+    LeftistHeap<Key> &LeftistHeap<Key>::operator=(LeftistHeap<Key> &&other) noexcept {
         if (this != &other) {
             root = nullptr;
             size = 0;
