@@ -1,9 +1,9 @@
-#ifndef MERGEABLEHEAPS_IHEAP_H
-#define MERGEABLEHEAPS_IHEAP_H
+#ifndef MERGEABLE_HEAPS_HEAP_INTERFACE_H
+#define MERGEABLE_HEAPS_HEAP_INTERFACE_H
 
 namespace heaps {
     template<class Key>
-    class IHeap {
+    class HeapInterface {
     public:
         virtual void Insert(Key x) = 0;
 
@@ -11,7 +11,7 @@ namespace heaps {
 
         virtual void ExtractMinimum() = 0;
 
-        virtual void Merge(IHeap &x) = 0;
+        virtual void Merge(HeapInterface &x) = 0;
 
         virtual size_t Size() = 0;
 
@@ -19,6 +19,6 @@ namespace heaps {
 
         virtual void Detach() = 0;
     };
-}
+} // namespace heaps
 
-#endif //MERGEABLEHEAPS_IHEAP_H
+#endif // MERGEABLE_HEAPS_HEAP_INTERFACE_H

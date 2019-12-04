@@ -93,4 +93,4 @@ void RunAction(std::vector<T> &candidate_heaps,
     }
 }
 
-#endif //MERGEABLE_HEAPS_TEST_ACTION_H
+#endif // MERGEABLE_HEAPS_TEST_ACTION_H

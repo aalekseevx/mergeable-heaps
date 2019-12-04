@@ -116,4 +116,4 @@ namespace heaps {
     ClassicalHeapNode<Key, Derived>::ClassicalHeapNode() : child_left(nullptr), child_right(nullptr) {}
 } // namespace heaps
 
-#endif //MERGEABLE_HEAPS_CLASSICAL_HEAP_NODE_H
+#endif // MERGEABLE_HEAPS_CLASSICAL_HEAP_NODE_H

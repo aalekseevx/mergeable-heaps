@@ -34,4 +34,4 @@ namespace heaps {
     SkewHeapNode<Key>::SkewHeapNode() = default;
 } // namespace heaps
 
-#endif //MERGEABLE_HEAPS_SKEW_HEAP_NODE_H
+#endif // MERGEABLE_HEAPS_SKEW_HEAP_NODE_H

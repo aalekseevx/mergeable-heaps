@@ -1,13 +1,13 @@
-#ifndef MERGEABLEHEAPS_NAIVE_HEAP_H
-#define MERGEABLEHEAPS_NAIVE_HEAP_H
+#ifndef MERGEABLE_HEAPS_NAIVE_HEAP_H
+#define MERGEABLE_HEAPS_NAIVE_HEAP_H
 
-#include "iheap.h"
+#include "heap_interface.h"
 #include "mergeable_heaps/exceptions.h"
 
 namespace heaps {
 
     template<class Key>
-    class StlHeap : public IHeap<Key> {
+    class StlHeap : public HeapInterface<Key> {
     private:
         std::multiset<Key> elements_;
         void Merge_(StlHeap <Key> &x);
@@ -20,7 +20,7 @@ namespace heaps {
 
         void ExtractMinimum() override;
 
-        void Merge(IHeap <Key> &x) override;
+        void Merge(HeapInterface <Key> &x) override;
 
         size_t Size() override;
 
@@ -53,7 +53,7 @@ namespace heaps {
     }
 
     template<class Key>
-    void StlHeap<Key>::Merge(IHeap <Key> &x) {
+    void StlHeap<Key>::Merge(HeapInterface <Key> &x) {
         if (&x == this) {
             throw SelfHeapMergeException();
         }
@@ -96,4 +96,4 @@ namespace heaps {
     }
 }
 
-#endif //MERGEABLEHEAPS_NAIVE_HEAP_H
+#endif // MERGEABLE_HEAPS_NAIVE_HEAP_H

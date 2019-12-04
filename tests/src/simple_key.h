@@ -1,5 +1,5 @@
-#ifndef MERGEABLE_HEAPS_KEY_H
-#define MERGEABLE_HEAPS_KEY_H
+#ifndef MERGEABLE_HEAPS_SIMPLE_KEY_H
+#define MERGEABLE_HEAPS_SIMPLE_KEY_H
 
 class SimpleKey {
 public:
@@ -19,4 +19,4 @@ bool SimpleKey::operator==(const SimpleKey &other) const {
     return value == other.value;
 }
 
-#endif //MERGEABLE_HEAPS_KEY_H
+#endif // MERGEABLE_HEAPS_SIMPLE_KEY_H

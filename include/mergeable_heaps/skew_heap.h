@@ -1,7 +1,7 @@
 #ifndef MERGEABLE_HEAPS_SKEW_H
 #define MERGEABLE_HEAPS_SKEW_H
 
-#include "iheap.h"
+#include "heap_interface.h"
 #include "exceptions.h"
 #include "nodes/skew_heap_node.h"
 #include "classical_heap.h"
@@ -19,6 +19,6 @@ namespace heaps {
         Base::size = 1;
         Base::root = new heaps::SkewHeapNode<Key>(key, nullptr, nullptr);
     }
-}
+} // namespace heaps
 
-#endif //MERGEABLE_HEAPS_SKEW_H
+#endif // MERGEABLE_HEAPS_SKEW_H

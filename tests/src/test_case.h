@@ -20,4 +20,4 @@ protected:
     std::vector<TestAction> actions_;
 };
 
-#endif //MERGEABLE_HEAPS_TEST_CASE_H
+#endif // MERGEABLE_HEAPS_TEST_CASE_H

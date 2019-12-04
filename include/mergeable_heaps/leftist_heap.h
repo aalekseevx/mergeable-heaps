@@ -1,5 +1,5 @@
-#ifndef MERGEABLEHEAPS_LEFTIST_H
-#define MERGEABLEHEAPS_LEFTIST_H
+#ifndef MERGEABLE_HEAPS_LEFTIST_H
+#define MERGEABLE_HEAPS_LEFTIST_H
 
 #include "classical_heap.h"
 #include "nodes/leftist_heap_node.h"
@@ -19,4 +19,4 @@ namespace heaps {
     }
 } // namespace heaps
 
-#endif //MERGEABLEHEAPS_LEFTIST_H
+#endif // MERGEABLE_HEAPS_LEFTIST_H

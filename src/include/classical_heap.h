@@ -2,12 +2,12 @@
 #define MERGEABLE_HEAPS_CLASSICAL_HEAP_H
 
 #include "mergeable_heaps/exceptions.h"
-#include "iheap.h"
+#include "heap_interface.h"
 #include "nodes/classical_heap_node.h"
 
 namespace heaps {
     template<class Key, class NodeType>
-    class ClassicalHeap : public IHeap<Key> {
+    class ClassicalHeap : public HeapInterface<Key> {
     protected:
         NodeType *root;
         
@@ -26,7 +26,7 @@ namespace heaps {
 
         void ExtractMinimum() override;
 
-        void Merge(IHeap<Key> &x) override;
+        void Merge(HeapInterface<Key> &x) override;
 
         size_t Size() override;
 
@@ -79,7 +79,7 @@ namespace heaps {
     }
 
     template<class Key, class NodeType>
-    void ClassicalHeap<Key, NodeType>::Merge(IHeap<Key> &x) {
+    void ClassicalHeap<Key, NodeType>::Merge(HeapInterface<Key> &x) {
         if (&x == this) {
             throw SelfHeapMergeException();
         }
@@ -169,6 +169,6 @@ namespace heaps {
         size = 1;
         root->key = x;
     }
-}
+} // namespace heaps
 
-#endif //MERGEABLE_HEAPS_CLASSICAL_HEAP_H
+#endif // MERGEABLE_HEAPS_CLASSICAL_HEAP_H

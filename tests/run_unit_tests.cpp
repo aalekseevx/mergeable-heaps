@@ -1,4 +1,4 @@
-#include "src/tests.h"
+#include "src/tests.cpp"
 
 int main(int argc, char *argv[]) {
     ::testing::InitGoogleTest(&argc, argv);

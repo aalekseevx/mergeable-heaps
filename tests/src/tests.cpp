@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 #include "test_case.h"
 #include "test_action.h"
-#include "mergeable_heaps/binomial.h"
-#include "mergeable_heaps/leftist.h"
-#include "mergeable_heaps/skew.h"
+#include "mergeable_heaps/binomial_heap.h"
+#include "mergeable_heaps/leftist_heap.h"
+#include "mergeable_heaps/skew_heap.h"
 #include "naive_heap.h"
 #include "simple_key.h"
 

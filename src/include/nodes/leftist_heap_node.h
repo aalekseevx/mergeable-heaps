@@ -55,4 +55,4 @@ namespace heaps {
     LeftistHeapNode<Key>::LeftistHeapNode() : Base(), rank(0) {}
 } // namespace heaps
 
-#endif //MERGEABLE_HEAPS_LEFTIST_HEAP_NODE_H
+#endif // MERGEABLE_HEAPS_LEFTIST_HEAP_NODE_H

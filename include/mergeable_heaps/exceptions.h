@@ -1,5 +1,5 @@
-#ifndef MERGEABLEHEAPS_EXCEPTIONS_H
-#define MERGEABLEHEAPS_EXCEPTIONS_H
+#ifndef MERGEABLE_HEAPS_EXCEPTIONS_H
+#define MERGEABLE_HEAPS_EXCEPTIONS_H
 
 namespace heaps {
     class WrongHeapTypeException : public std::exception {
@@ -25,6 +25,6 @@ namespace heaps {
             return "This method is restricted, because the result can't be relied on.";
         }
     };
-}
+} // namespace heaps
 
-#endif //MERGEABLEHEAPS_EXCEPTIONS_H
+#endif // MERGEABLE_HEAPS_EXCEPTIONS_H

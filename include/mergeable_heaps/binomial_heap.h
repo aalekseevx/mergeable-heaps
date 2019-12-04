@@ -3,13 +3,13 @@
 
 #include <string>
 #include <algorithm>
-#include "iheap.h"
+#include "heap_interface.h"
 #include "exceptions.h"
 #include "nodes/binomial_heap_node.h"
 
 namespace heaps {
     template<class Key>
-    class BinomialHeap : public IHeap<Key> {
+    class BinomialHeap : public HeapInterface<Key> {
     private:
         BinomialHeapNode<Key> *root;
 
@@ -47,7 +47,7 @@ namespace heaps {
 
         void ExtractMinimum() override;
 
-        void Merge(IHeap<Key> &x) override;
+        void Merge(HeapInterface<Key> &x) override;
 
         size_t Size() override;
 
@@ -113,7 +113,7 @@ namespace heaps {
     }
 
     template<class Key>
-    void BinomialHeap<Key>::Merge(IHeap<Key> &x) {
+    void BinomialHeap<Key>::Merge(HeapInterface<Key> &x) {
         if (&x == this) {
             throw SelfHeapMergeException();
         }
@@ -316,4 +316,4 @@ namespace heaps {
     }
 } // namespace heaps
 
-#endif //MERGEABLE_HEAPS_BINOMIAL_H
+#endif // MERGEABLE_HEAPS_BINOMIAL_H

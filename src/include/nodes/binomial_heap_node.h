@@ -126,6 +126,6 @@ namespace heaps {
             sibling->CollectData(x);
         }
     }
-}
+} // namespace heaps
 
 #endif // MERGEABLE_HEAPS_BINOMIAL_HEAP_NODE_H
