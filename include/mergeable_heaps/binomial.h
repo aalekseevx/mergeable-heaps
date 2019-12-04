@@ -23,8 +23,6 @@ namespace heaps {
 
             static void Raise(Node *&v);
 
-            size_t CalculateSize();
-
             void Merge_(Node* other);
 
             Node* Clone();
@@ -46,6 +44,11 @@ namespace heaps {
         };
 
         Node *root;
+
+        // As we save memory and don't store size of the subtree in nodes,
+        // some heaps, created by Merge might not contain size information.
+        // They will throw a RestrictedMethodException
+        bool is_temporary;
         size_t size;
 
         Node *FindMinimalNode();
@@ -97,14 +100,6 @@ namespace heaps {
 
         void Swap(BinomialHeap<Key> &x) noexcept;
     };
-
-    // TODO O(n)???
-    template<class Key>
-    size_t BinomialHeap<Key>::Node::CalculateSize() {
-        return 1 +
-               (sibling == nullptr ? 0 : sibling->CalculateSize()) +
-               (child == nullptr ? 0 : child->CalculateSize());
-    }
 
     // Destructor
     template<class Key>
@@ -221,9 +216,10 @@ namespace heaps {
         } else {
             predecessor->sibling = v->sibling;
         }
-        // std::cerr << "extracted\n";
         Merge(*new BinomialHeap<Key>(CutVertex(v)));
-        // std::cerr << "merged\n";
+        // Decreasing size and disabling restricting
+        size -= 1;
+        is_temporary = false;
     }
 
     template<class Key>
@@ -245,10 +241,18 @@ namespace heaps {
     template<class Key>
     void BinomialHeap<Key>::Merge(IHeap<Key> &x) {
         if (&x == this) {
-            throw SelfHeapMerge();
+            throw SelfHeapMergeException();
         }
         try {
-            Merge_(dynamic_cast<BinomialHeap<Key> &>(x));
+            auto& casted = dynamic_cast<BinomialHeap<Key> &>(x);
+            Merge_(casted);
+            // Trying to update size.
+            // If merged heap was temporary, we can't rely on the size field again.
+            try {
+                size += casted.Size();
+            } catch (const RestrictedMethodException &e) {
+                is_temporary = true;
+            }
             x.Detach();
         } catch (const std::bad_cast &e) {
             throw WrongHeapTypeException();
@@ -256,12 +260,15 @@ namespace heaps {
     }
 
     template<class Key>
-    BinomialHeap<Key>::BinomialHeap(int key) : size(1) {
+    BinomialHeap<Key>::BinomialHeap(int key) : size(1), is_temporary(false) {
         root = new Node(key, nullptr, nullptr, nullptr, 0u);
     }
 
     template<class Key>
     size_t BinomialHeap<Key>::Size() {
+        if (is_temporary) {
+            throw RestrictedMethodException();
+        }
         return size;
     }
 
@@ -295,12 +302,9 @@ namespace heaps {
             next = current->sibling;
             current->sibling = nullptr;
             current->parent = nullptr;
-            // std::cerr << "merging...\n";
             new_heap.Merge(*new BinomialHeap(current));
-            // std::cerr << "merged...\n";
         }
         v->child = nullptr;
-        // std::cerr << "cutted\n";
         return new_heap;
     }
 
@@ -358,18 +362,18 @@ namespace heaps {
     }
 
     template<class Key>
-    BinomialHeap<Key>::BinomialHeap() : root(nullptr), size(0) {}
+    BinomialHeap<Key>::BinomialHeap() : root(nullptr), is_temporary(false), size(0) {}
 
     template<class Key>
     bool BinomialHeap<Key>::Empty() {
+        if (is_temporary) {
+            throw RestrictedMethodException();
+        }
         return size == 0;
     }
 
-    // TODO: Chto za?
     template<class Key>
-    BinomialHeap<Key>::BinomialHeap(BinomialHeap::Node *root) : root(root) {
-        size = (root == nullptr ? 0 : root->CalculateSize());
-    }
+    BinomialHeap<Key>::BinomialHeap(BinomialHeap::Node *root) : root(root), is_temporary(true), size(0) {}
 
     template<class Key>
     void BinomialHeap<Key>::Detach() {
@@ -387,13 +391,16 @@ namespace heaps {
 
     // Copy constructor
     template<class Key>
-    BinomialHeap<Key>::BinomialHeap(const BinomialHeap<Key> &other) : size(other.size), root(new Node(*other.root)) {}
+    BinomialHeap<Key>::BinomialHeap(const BinomialHeap<Key> &other) : size(other.size), root(new Node(*other.root)) {
+        is_temporary = other.is_temporary;
+    }
 
     // Move constructor
     template<class Key>
     BinomialHeap<Key>::BinomialHeap(BinomialHeap<Key> &&other) noexcept {
         root = nullptr;
         size = 0;
+        is_temporary = false;
         Swap(other);
     }
 
@@ -413,6 +420,7 @@ namespace heaps {
         if (this != &other) {
             root = nullptr;
             size = 0;
+            is_temporary = false;
             Swap(other);
         }
         return *this;
@@ -435,4 +443,4 @@ namespace heaps {
     }
 }
 
-#endif //MERGEABLEHEAPS_BINOMIAL_H
+#endif //MERGEABLE_HEAPS_BINOMIAL_H

@@ -14,9 +14,15 @@ namespace heaps {
         }
     };
 
-    class SelfHeapMerge : public std::exception {
+    class SelfHeapMergeException : public std::exception {
         [[nodiscard]] const char *what() const noexcept override {
             return "Can't merge a heap to itself. Please, make a copy";
+        }
+    };
+
+    class RestrictedMethodException : public std::exception {
+        [[nodiscard]] const char *what() const noexcept override {
+            return "This method is restricted, because the result can't be relied on.";
         }
     };
 }

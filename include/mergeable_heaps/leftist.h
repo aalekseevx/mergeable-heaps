@@ -187,7 +187,7 @@ namespace heaps {
     template<class Key>
     void LeftistHeap<Key>::Merge(IHeap <Key> &x) {
         if (&x == this) {
-            throw SelfHeapMerge();
+            throw SelfHeapMergeException();
         }
         try {
             Merge_(dynamic_cast<LeftistHeap<Key> &>(x));

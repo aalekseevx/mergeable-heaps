@@ -101,8 +101,8 @@ void TestAction(std::vector<T> &candidate_heaps,
                 sizes[action.index[0]] += sizes[action.index[1]];
                 sizes[action.index[1]] = 0;
             } else {
-                ASSERT_THROW(candidate_heaps[action.index[0]].Merge(candidate_heaps[action.index[1]]), heaps::SelfHeapMerge);
-                ASSERT_THROW(correct_heaps[action.index[0]].Merge(correct_heaps[action.index[1]]), heaps::SelfHeapMerge);
+                ASSERT_THROW(candidate_heaps[action.index[0]].Merge(candidate_heaps[action.index[1]]), heaps::SelfHeapMergeException);
+                ASSERT_THROW(correct_heaps[action.index[0]].Merge(correct_heaps[action.index[1]]), heaps::SelfHeapMergeException);
             }
             break;
         }
