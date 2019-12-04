@@ -27,6 +27,8 @@ namespace heaps {
         bool Empty() override;
 
         void Detach() override;
+
+        std::vector<int> Data();
     };
 
     template<class Key>
@@ -86,6 +88,11 @@ namespace heaps {
     template<class Key>
     void StlHeap<Key>::Detach() {
 
+    }
+
+    template<class Key>
+    std::vector<int> StlHeap<Key>::Data() {
+        return std::vector<int>(elements_.begin(), elements_.end());
     }
 }
 
