@@ -31,8 +31,7 @@ Building is nothing special.
 Tests are created with gtest framework. It will downloaded and compiled
 during cmake. Run tests as follows:
 ```bash
-    cd bin
-    ctest
+    ./bin/RunUnitTests
 ```
 
 ## License
