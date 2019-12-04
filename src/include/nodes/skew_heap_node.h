@@ -21,12 +21,12 @@ namespace heaps {
         if (root_1 == nullptr || root_2 == nullptr) {
             return root_1 == nullptr ? root_2 : root_1;
         }
-        if (!(root_1->key < root_2->key)) {
+        if (!(root_1->key_ < root_2->key_)) {
             std::swap(root_1, root_2);
         }
-        SkewHeapNode *tmp_root = root_1->child_right;
-        std::swap(root_1->child_left, root_1->child_right);
-        root_1->child_left = SkewHeapNode::Merge_(tmp_root, root_2);
+        SkewHeapNode *tmp_root = root_1->child_right_;
+        std::swap(root_1->child_left_, root_1->child_right_);
+        root_1->child_left_ = SkewHeapNode::Merge_(tmp_root, root_2);
         return root_1;
     }
 

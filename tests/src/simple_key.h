@@ -3,7 +3,7 @@
 
 class SimpleKey {
 public:
-    int value{};
+    int value_{};
     bool operator< (const SimpleKey& other) const;
 
     bool operator== (const SimpleKey& other) const;
@@ -12,11 +12,11 @@ public:
 };
 
 bool SimpleKey::operator<(const SimpleKey &other) const {
-    return value < other.value;
+    return value_ < other.value_;
 }
 
 bool SimpleKey::operator==(const SimpleKey &other) const {
-    return value == other.value;
+    return value_ == other.value_;
 }
 
 #endif // MERGEABLE_HEAPS_SIMPLE_KEY_H

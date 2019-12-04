@@ -12,22 +12,22 @@ enum Func {
 
 class TestAction {
 public:
-    constexpr static const int func_count = 5;
-    Func call;
-    SimpleKey key;
-    int index[2];
+    constexpr static const int func_count_ = 5;
+    Func call_;
+    SimpleKey key_;
+    int index_[2];
 
     TestAction() = default;
 
     TestAction(size_t heaps_cnt) {
         static std::mt19937 gen;
-        key.value = gen();
+        key_.value_ = gen();
         if (heaps_cnt == 0) {
-            call = Func::AddHeap;
-            index[0] = index[1] = -1;
+            call_ = Func::AddHeap;
+            index_[0] = index_[1] = -1;
         } else {
-            call = Func(static_cast<size_t>(gen()) % func_count);
-            for (int &i: index) {
+            call_ = Func(static_cast<size_t>(gen()) % func_count_);
+            for (int &i: index_) {
                 i = static_cast<size_t>(gen()) % heaps_cnt;
             }
         }
@@ -41,52 +41,52 @@ void RunAction(std::vector<T> &candidate_heaps,
                 std::vector<size_t> &sizes,
                 TestAction action) {
 
-    switch (action.call) {
+    switch (action.call_) {
         case Func::GetMinimum: {
             SimpleKey candidate_answer{};
             SimpleKey correct_answer{};
-            if (sizes[action.index[0]] > 0) {
-                ASSERT_NO_THROW(candidate_answer = candidate_heaps[action.index[0]].GetMinimum());
-                ASSERT_NO_THROW(correct_answer = correct_heaps[action.index[0]].GetMinimum());
+            if (sizes[action.index_[0]] > 0) {
+                ASSERT_NO_THROW(candidate_answer = candidate_heaps[action.index_[0]].GetMinimum());
+                ASSERT_NO_THROW(correct_answer = correct_heaps[action.index_[0]].GetMinimum());
                 ASSERT_EQ(candidate_answer, correct_answer);
             } else {
-                ASSERT_THROW(candidate_answer = candidate_heaps[action.index[0]].GetMinimum(), heaps::EmptyHeapException);
-                ASSERT_THROW(correct_answer = correct_heaps[action.index[0]].GetMinimum(), heaps::EmptyHeapException);
+                ASSERT_THROW(candidate_answer = candidate_heaps[action.index_[0]].GetMinimum(), heaps::EmptyHeapException);
+                ASSERT_THROW(correct_answer = correct_heaps[action.index_[0]].GetMinimum(), heaps::EmptyHeapException);
             }
             break;
         }
         case Func::AddHeap: {
-            ASSERT_NO_THROW(candidate_heaps.emplace_back(action.key));
-            ASSERT_NO_THROW(correct_heaps.emplace_back(action.key));
+            ASSERT_NO_THROW(candidate_heaps.emplace_back(action.key_));
+            ASSERT_NO_THROW(correct_heaps.emplace_back(action.key_));
             sizes.emplace_back(1);
             break;
         }
         case Func::ExtractMinimum: {
-            if (sizes[action.index[0]] > 0) {
-                ASSERT_NO_THROW(candidate_heaps[action.index[0]].ExtractMinimum());
-                ASSERT_NO_THROW(correct_heaps[action.index[0]].ExtractMinimum());
-                --sizes[action.index[0]];
+            if (sizes[action.index_[0]] > 0) {
+                ASSERT_NO_THROW(candidate_heaps[action.index_[0]].ExtractMinimum());
+                ASSERT_NO_THROW(correct_heaps[action.index_[0]].ExtractMinimum());
+                --sizes[action.index_[0]];
             } else {
-                ASSERT_THROW(candidate_heaps[action.index[0]].ExtractMinimum(), heaps::EmptyHeapException);
-                ASSERT_THROW(correct_heaps[action.index[0]].ExtractMinimum(), heaps::EmptyHeapException);
+                ASSERT_THROW(candidate_heaps[action.index_[0]].ExtractMinimum(), heaps::EmptyHeapException);
+                ASSERT_THROW(correct_heaps[action.index_[0]].ExtractMinimum(), heaps::EmptyHeapException);
             }
             break;
         }
         case Func::Insert: {
-            ASSERT_NO_THROW(candidate_heaps[action.index[0]].Insert(action.key));
-            ASSERT_NO_THROW(correct_heaps[action.index[0]].Insert(action.key));
-            ++sizes[action.index[0]];
+            ASSERT_NO_THROW(candidate_heaps[action.index_[0]].Insert(action.key_));
+            ASSERT_NO_THROW(correct_heaps[action.index_[0]].Insert(action.key_));
+            ++sizes[action.index_[0]];
             break;
         }
         case Func::Merge: {
-            if (action.index[0] != action.index[1]) {
-                ASSERT_NO_THROW(candidate_heaps[action.index[0]].Merge(candidate_heaps[action.index[1]]));
-                ASSERT_NO_THROW(correct_heaps[action.index[0]].Merge(correct_heaps[action.index[1]]));
-                sizes[action.index[0]] += sizes[action.index[1]];
-                sizes[action.index[1]] = 0;
+            if (action.index_[0] != action.index_[1]) {
+                ASSERT_NO_THROW(candidate_heaps[action.index_[0]].Merge(candidate_heaps[action.index_[1]]));
+                ASSERT_NO_THROW(correct_heaps[action.index_[0]].Merge(correct_heaps[action.index_[1]]));
+                sizes[action.index_[0]] += sizes[action.index_[1]];
+                sizes[action.index_[1]] = 0;
             } else {
-                ASSERT_THROW(candidate_heaps[action.index[0]].Merge(candidate_heaps[action.index[1]]), heaps::SelfHeapMergeException);
-                ASSERT_THROW(correct_heaps[action.index[0]].Merge(correct_heaps[action.index[1]]), heaps::SelfHeapMergeException);
+                ASSERT_THROW(candidate_heaps[action.index_[0]].Merge(candidate_heaps[action.index_[1]]), heaps::SelfHeapMergeException);
+                ASSERT_THROW(correct_heaps[action.index_[0]].Merge(correct_heaps[action.index_[1]]), heaps::SelfHeapMergeException);
             }
             break;
         }

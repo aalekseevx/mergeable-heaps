@@ -8,10 +8,10 @@ namespace heaps {
     class ClassicalHeapNode {
     public:
         // Data which will be stored in the node.
-        Key key;
+        Key key_;
         // Pointers to its children. Equal to nullptr, if there is none.
-        Derived *child_left;
-        Derived *child_right;
+        Derived *child_left_;
+        Derived *child_right_;
 
         // Simple constructors
         ClassicalHeapNode();
@@ -47,32 +47,32 @@ namespace heaps {
 
     template<class Key, class Derived>
     ClassicalHeapNode<Key, Derived>::~ClassicalHeapNode() {
-        if (child_left != nullptr) {
-            delete child_left;
+        if (child_left_ != nullptr) {
+            delete child_left_;
         }
-        if (child_right != nullptr) {
-            delete child_right;
+        if (child_right_ != nullptr) {
+            delete child_right_;
         }
     }
 
     template<class Key, class Derived>
-    ClassicalHeapNode<Key, Derived>::ClassicalHeapNode(const ClassicalHeapNode<Key, Derived> &other) : key(other.key),
-                                                                                                       child_left(
-                                                                                                               other.child_left),
-                                                                                                       child_right(
-                                                                                                               other.child_right) {
-        if (child_left != nullptr) {
-            child_left = new ClassicalHeapNode(*child_left);
+    ClassicalHeapNode<Key, Derived>::ClassicalHeapNode(const ClassicalHeapNode<Key, Derived> &other) : key_(other.key_),
+                                                                                                       child_left_(
+                                                                                                               other.child_left_),
+                                                                                                       child_right_(
+                                                                                                               other.child_right_) {
+        if (child_left_ != nullptr) {
+            child_left_ = new ClassicalHeapNode(*child_left_);
         }
-        if (child_right != nullptr) {
-            child_right = new ClassicalHeapNode(*child_right);
+        if (child_right_ != nullptr) {
+            child_right_ = new ClassicalHeapNode(*child_right_);
         }
     }
 
     template<class Key, class Derived>
     ClassicalHeapNode<Key, Derived>::ClassicalHeapNode(ClassicalHeapNode<Key, Derived> &&other) noexcept {
-        child_right = child_left = nullptr;
-        key = 0;
+        child_right_ = child_left_ = nullptr;
+        key_ = 0;
         Swap(other);
     }
 
@@ -89,8 +89,8 @@ namespace heaps {
     template<class Key, class Derived>
     ClassicalHeapNode<Key, Derived> &ClassicalHeapNode<Key, Derived>::operator=(ClassicalHeapNode &&other) noexcept {
         if (this != &other) {
-            child_left = child_right = nullptr;
-            key = 0;
+            child_left_ = child_right_ = nullptr;
+            key_ = 0;
             Swap(other);
         }
         return *this;
@@ -98,22 +98,22 @@ namespace heaps {
 
     template<class Key, class Derived>
     ClassicalHeapNode<Key, Derived>::ClassicalHeapNode(Key key, Derived *child_left, Derived *child_right) :
-            key(key), child_left(child_left), child_right(child_right) {}
+            key_(key), child_left_(child_left), child_right_(child_right) {}
 
     template<class Key, class Derived>
     void ClassicalHeapNode<Key, Derived>::Swap(ClassicalHeapNode<Key, Derived> &x) noexcept {
-        std::swap(child_left, x.child_left);
-        std::swap(child_right, x.child_right);
-        std::swap(key, x.key);
+        std::swap(child_left_, x.child_left_);
+        std::swap(child_right_, x.child_right_);
+        std::swap(key_, x.key_);
     }
 
     template<class Key, class Derived>
     void ClassicalHeapNode<Key, Derived>::Detach() {
-        child_left = child_right = nullptr;
+        child_left_ = child_right_ = nullptr;
     }
 
     template<class Key, class Derived>
-    ClassicalHeapNode<Key, Derived>::ClassicalHeapNode() : child_left(nullptr), child_right(nullptr) {}
+    ClassicalHeapNode<Key, Derived>::ClassicalHeapNode() : child_left_(nullptr), child_right_(nullptr) {}
 } // namespace heaps
 
 #endif // MERGEABLE_HEAPS_CLASSICAL_HEAP_NODE_H

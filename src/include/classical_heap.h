@@ -9,9 +9,9 @@ namespace heaps {
     template<class Key, class NodeType>
     class ClassicalHeap : public HeapInterface<Key> {
     protected:
-        NodeType *root;
+        NodeType *root_;
         
-        size_t size;
+        size_t size_;
 
         void Merge_(ClassicalHeap &x);
 
@@ -61,7 +61,7 @@ namespace heaps {
         if (Empty()) {
             throw EmptyHeapException();
         } else {
-            return root->key;
+            return root_->key;
         }
     }
 
@@ -70,11 +70,11 @@ namespace heaps {
         if (Empty()) {
             throw EmptyHeapException();
         } else {
-            NodeType *left = root->child_left;
-            NodeType *right = root->child_right;
-            root->Detach();
-            delete root;
-            root = NodeType::Merge_(left, right);
+            NodeType *left = root_->child_left;
+            NodeType *right = root_->child_right;
+            root_->Detach();
+            delete root_;
+            root_ = NodeType::Merge_(left, right);
         }
     }
 
@@ -93,46 +93,46 @@ namespace heaps {
 
     template<class Key, class NodeType>
     size_t ClassicalHeap<Key, NodeType>::Size() {
-        return Empty() ? 0 : size;
+        return Empty() ? 0 : size_;
     }
 
     template<class Key, class NodeType>
     bool ClassicalHeap<Key, NodeType>::Empty() {
-        return root == nullptr;
+        return root_ == nullptr;
     }
 
     template<class Key, class NodeType>
     void ClassicalHeap<Key, NodeType>::Merge_(ClassicalHeap &x) {
-        root = NodeType::Merge_(root, x.root);
+        root_ = NodeType::Merge_(root_, x.root_);
     }
 
     template<class Key, class NodeType>
-    ClassicalHeap<Key, NodeType>::ClassicalHeap() : root(nullptr), size(0) {}
+    ClassicalHeap<Key, NodeType>::ClassicalHeap() : root_(nullptr), size_(0) {}
 
     template<class Key, class NodeType>
     void ClassicalHeap<Key, NodeType>::Detach() {
-        root = nullptr;
-        size = 0;
+        root_ = nullptr;
+        size_ = 0;
     }
 
     // Destructor
     template<class Key, class NodeType>
     ClassicalHeap<Key, NodeType>::~ClassicalHeap<Key, NodeType>() {
-        if (root != nullptr) {
-            delete root;
+        if (root_ != nullptr) {
+            delete root_;
         }
     }
 
     // Copy constructor
     template<class Key, class NodeType>
-    ClassicalHeap<Key, NodeType>::ClassicalHeap(const ClassicalHeap<Key, NodeType> &other) : size(other.size),
-                                                                         root(new ClassicalHeapNode<Key, NodeType>(*other.root)) {}
+    ClassicalHeap<Key, NodeType>::ClassicalHeap(const ClassicalHeap<Key, NodeType> &other) : size_(other.size_),
+                                                                                             root_(new ClassicalHeapNode<Key, NodeType>(*other.root_)) {}
 
     // Move constructor
     template<class Key, class NodeType>
     ClassicalHeap<Key, NodeType>::ClassicalHeap(ClassicalHeap<Key, NodeType> &&other) noexcept {
-        root = nullptr;
-        size = 0;
+        root_ = nullptr;
+        size_ = 0;
         Swap(other);
     }
 
@@ -150,8 +150,8 @@ namespace heaps {
     template<class Key, class NodeType>
     ClassicalHeap<Key, NodeType> &ClassicalHeap<Key, NodeType>::operator=(ClassicalHeap<Key, NodeType> &&other) noexcept {
         if (this != &other) {
-            root = nullptr;
-            size = 0;
+            root_ = nullptr;
+            size_ = 0;
             Swap(other);
         }
         return *this;
@@ -159,15 +159,15 @@ namespace heaps {
 
     template<class Key, class NodeType>
     void ClassicalHeap<Key, NodeType>::Swap(ClassicalHeap<Key, NodeType> &x) noexcept {
-        std::swap(root, x.root);
-        std::swap(size, x.size);
+        std::swap(root_, x.root_);
+        std::swap(size_, x.size_);
     }
 
     template<class Key, class NodeType>
     ClassicalHeap<Key, NodeType>::ClassicalHeap(Key x) {
-        root = new NodeType();
-        size = 1;
-        root->key = x;
+        root_ = new NodeType();
+        size_ = 1;
+        root_->key = x;
     }
 } // namespace heaps
 

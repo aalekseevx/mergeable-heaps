@@ -5,14 +5,14 @@ namespace heaps {
     template <class Key>
     class BinomialHeapNode {
     public:
-        Key key;
-        BinomialHeapNode *parent;
-        BinomialHeapNode *sibling;
-        BinomialHeapNode *child;
-        size_t degree;
+        Key key_;
+        BinomialHeapNode *parent_;
+        BinomialHeapNode *sibling_;
+        BinomialHeapNode *child_;
+        size_t degree_;
 
         BinomialHeapNode(Key key, BinomialHeapNode *parent, BinomialHeapNode *sibling, BinomialHeapNode *child, size_t degree) :
-                key(key), parent(parent), sibling(sibling), child(child), degree(degree) {}
+                key_(key), parent_(parent), sibling_(sibling), child_(child), degree_(degree) {}
 
         static void Raise(BinomialHeapNode *&v);
 
@@ -39,32 +39,32 @@ namespace heaps {
     // Destructor
     template<class Key>
     BinomialHeapNode<Key>::~BinomialHeapNode() {
-        if (child != nullptr) {
-            delete child;
+        if (child_ != nullptr) {
+            delete child_;
         }
-        if (sibling != nullptr) {
-            delete sibling;
+        if (sibling_ != nullptr) {
+            delete sibling_;
         }
     }
 
     // Copy constructor
     template<class Key>
-    BinomialHeapNode<Key>::BinomialHeapNode(const BinomialHeapNode<Key> &other) : key(other.key), parent(other.parent),
-                                                                     sibling(other.sibling), child(other.child),
-                                                                     degree(other.degree) {
-        if (child != nullptr) {
-            child = new BinomialHeapNode<Key>(*child);
+    BinomialHeapNode<Key>::BinomialHeapNode(const BinomialHeapNode<Key> &other) : key_(other.key_), parent_(other.parent_),
+                                                                                  sibling_(other.sibling_), child_(other.child_),
+                                                                                  degree_(other.degree_) {
+        if (child_ != nullptr) {
+            child_ = new BinomialHeapNode<Key>(*child_);
         }
-        if (sibling != nullptr) {
-            sibling = new BinomialHeapNode<Key>(*sibling);
+        if (sibling_ != nullptr) {
+            sibling_ = new BinomialHeapNode<Key>(*sibling_);
         }
     }
 
     // TODO: use detach?
     template<class Key>
     BinomialHeapNode<Key>::BinomialHeapNode(BinomialHeapNode<Key> &&other) noexcept {
-        parent = sibling = child = nullptr;
-        degree = key = 0;
+        parent_ = sibling_ = child_ = nullptr;
+        degree_ = key_ = 0;
         Swap(other);
     }
 
@@ -80,8 +80,8 @@ namespace heaps {
     template<class Key>
     BinomialHeapNode<Key> &BinomialHeapNode<Key>::operator=(BinomialHeapNode<Key> &&other) noexcept {
         if (this != &other) {
-            parent = sibling = child = nullptr;
-            degree = key = 0;
+            parent_ = sibling_ = child_ = nullptr;
+            degree_ = key_ = 0;
             Swap(other);
         }
         return *this;
@@ -89,41 +89,41 @@ namespace heaps {
 
     template<class Key>
     void BinomialHeapNode<Key>::Swap(BinomialHeapNode<Key> &x) noexcept {
-        std::swap(key, x.key);
-        std::swap(parent, x.parent);
-        std::swap(sibling, x.sibling);
-        std::swap(child, x.child);
-        std::swap(degree, x.degree);
+        std::swap(key_, x.key_);
+        std::swap(parent_, x.parent_);
+        std::swap(sibling_, x.sibling_);
+        std::swap(child_, x.child_);
+        std::swap(degree_, x.degree_);
     }
 
     template<class Key>
     void BinomialHeapNode<Key>::Raise(BinomialHeapNode<Key> *&v) {
-        while (v->parent != nullptr) {
-            v = v->parent;
+        while (v->parent_ != nullptr) {
+            v = v->parent_;
         }
     }
 
     template<class Key>
     void BinomialHeapNode<Key>::Merge_(BinomialHeapNode<Key> *other) {
-        other->parent = this;
-        other->sibling = child;
-        child = other;
-        ++degree;
+        other->parent_ = this;
+        other->sibling_ = child_;
+        child_ = other;
+        ++degree_;
     }
 
     template<class Key>
     BinomialHeapNode<Key> *BinomialHeapNode<Key>::Clone() {
-        return new BinomialHeapNode<Key>(key, parent, sibling, child, degree);
+        return new BinomialHeapNode<Key>(key_, parent_, sibling_, child_, degree_);
     }
 
     template<class Key>
     void BinomialHeapNode<Key>::CollectData(std::vector<Key> &x) {
-        x.push_back(key);
-        if (child) {
-            child->CollectData(x);
+        x.push_back(key_);
+        if (child_) {
+            child_->CollectData(x);
         }
-        if (sibling) {
-            sibling->CollectData(x);
+        if (sibling_) {
+            sibling_->CollectData(x);
         }
     }
 } // namespace heaps

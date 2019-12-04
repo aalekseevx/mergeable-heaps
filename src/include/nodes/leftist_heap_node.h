@@ -8,7 +8,7 @@ namespace heaps {
     template<class Key>
     class LeftistHeapNode : public ClassicalHeapNode<Key, LeftistHeapNode<Key>> {
     public:
-        size_t rank;
+        size_t rank_;
         using Base = ClassicalHeapNode<Key, LeftistHeapNode<Key>>;
 
         LeftistHeapNode();
@@ -22,13 +22,13 @@ namespace heaps {
 
     template<class Key>
     LeftistHeapNode<Key>::LeftistHeapNode(Key key, LeftistHeapNode<Key> *child_left, LeftistHeapNode<Key> *child_right,
-                                          size_t rank) : Base(key, child_left, child_right), rank(rank) {}
+                                          size_t rank) : Base(key, child_left, child_right), rank_(rank) {}
 
     template<class Key>
     void LeftistHeapNode<Key>::UpdateRank() {
-        rank = 1 + std::min(
-                (Base::child_left == nullptr ? 0 : Base::child_left->rank),
-                (Base::child_right == nullptr ? 0 : Base::child_right->rank)
+        rank_ = 1 + std::min(
+                (Base::child_left_ == nullptr ? 0 : Base::child_left_->rank_),
+                (Base::child_right_ == nullptr ? 0 : Base::child_right_->rank_)
         );
     }
 
@@ -37,14 +37,14 @@ namespace heaps {
         if (root_1 == nullptr || root_2 == nullptr) {
             return root_1 == nullptr ? root_2 : root_1;
         }
-        if (!(root_1->key < root_2->key)) {
+        if (!(root_1->key_ < root_2->key_)) {
             std::swap(root_1, root_2);
         }
 
-        root_1->child_right = Merge_(root_1->child_right, root_2);
+        root_1->child_right_ = Merge_(root_1->child_right_, root_2);
 
-        if (root_1->child_left == nullptr || root_1->child_left->rank < root_1->child_right->rank) {
-            std::swap(root_1->child_left, root_1->child_right);
+        if (root_1->child_left_ == nullptr || root_1->child_left_->rank_ < root_1->child_right_->rank_) {
+            std::swap(root_1->child_left_, root_1->child_right_);
         }
         root_1->UpdateRank();
 
@@ -52,7 +52,7 @@ namespace heaps {
     }
 
     template<class Key>
-    LeftistHeapNode<Key>::LeftistHeapNode() : Base(), rank(0) {}
+    LeftistHeapNode<Key>::LeftistHeapNode() : Base(), rank_(0) {}
 } // namespace heaps
 
 #endif // MERGEABLE_HEAPS_LEFTIST_HEAP_NODE_H

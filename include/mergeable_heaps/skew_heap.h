@@ -16,8 +16,8 @@ namespace heaps {
 
     template<class Key>
     SkewHeap<Key>::SkewHeap(Key key) {
-        Base::size = 1;
-        Base::root = new heaps::SkewHeapNode<Key>(key, nullptr, nullptr);
+        Base::size_ = 1;
+        Base::root_ = new heaps::SkewHeapNode<Key>(key, nullptr, nullptr);
     }
 } // namespace heaps
 

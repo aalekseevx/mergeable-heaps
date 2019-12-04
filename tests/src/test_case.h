@@ -10,7 +10,7 @@ protected:
         int heaps_cnt = 0;
         for (auto &i: actions_) {
             i = TestAction(heaps_cnt);
-            heaps_cnt += i.call == Func::AddHeap;
+            heaps_cnt += i.call_ == Func::AddHeap;
         }
     }
 

@@ -14,8 +14,8 @@ namespace heaps {
 
     template<class Key>
     LeftistHeap<Key>::LeftistHeap(Key key) {
-        Base::size = 1;
-        Base::root = new LeftistHeapNode<Key>(key, nullptr, nullptr, 0);
+        Base::size_ = 1;
+        Base::root_ = new LeftistHeapNode<Key>(key, nullptr, nullptr, 0);
     }
 } // namespace heaps
 
