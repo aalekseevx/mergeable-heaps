@@ -8,7 +8,7 @@
 namespace heaps {
     template<class Key, class NodeType>
     class ClassicalHeap : public IHeap<Key> {
-    private:
+    protected:
         NodeType *root;
         
         size_t size;
@@ -18,7 +18,7 @@ namespace heaps {
     public:
         ClassicalHeap();
 
-        explicit ClassicalHeap(Key key);
+        explicit ClassicalHeap(Key x);
 
         void Insert(Key x) override;
 
@@ -92,11 +92,6 @@ namespace heaps {
     }
 
     template<class Key, class NodeType>
-    ClassicalHeap<Key, NodeType>::ClassicalHeap(Key key) : size(1) {
-        root = new NodeType(key, nullptr, nullptr);
-    }
-
-    template<class Key, class NodeType>
     size_t ClassicalHeap<Key, NodeType>::Size() {
         return Empty() ? 0 : size;
     }
@@ -166,6 +161,13 @@ namespace heaps {
     void ClassicalHeap<Key, NodeType>::Swap(ClassicalHeap<Key, NodeType> &x) noexcept {
         std::swap(root, x.root);
         std::swap(size, x.size);
+    }
+
+    template<class Key, class NodeType>
+    ClassicalHeap<Key, NodeType>::ClassicalHeap(Key x) {
+        root = new NodeType();
+        size = 1;
+        root->key = x;
     }
 }
 
