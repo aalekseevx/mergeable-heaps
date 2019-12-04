@@ -13,6 +13,7 @@ enum Func {
 class Action {
 public:
     constexpr static const int func_count = 5;
+    static const int SEED = 484596543;
     Func call;
     int key;
     int index[2];
@@ -20,7 +21,7 @@ public:
     Action() = default;
 
     Action(size_t heaps_cnt) {
-        static std::mt19937 gen;
+        static std::mt19937 gen(SEED);
         key = gen();
         if (heaps_cnt == 0) {
             call = Func::AddHeap;
@@ -118,10 +119,10 @@ void TestHeap(const std::vector<Action> &actions) {
     }
 }
 
-//TEST_F(TestCase, BinomialHeapTest) {
-//    TestHeap<heaps::BinomialHeap<int>>(actions_);
-//}
-//
+TEST_F(TestCase, BinomialHeapTest) {
+    TestHeap<heaps::BinomialHeap<int>>(actions_);
+}
+
 TEST_F(TestCase, LeftistHeapTest) {
     TestHeap<heaps::LeftistHeap<int>>(actions_);
 }
