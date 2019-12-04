@@ -5,11 +5,12 @@
 #include "mergeable_heaps/leftist.h"
 #include "mergeable_heaps/skew.h"
 #include "naive_heap.h"
+#include "simple_key.h"
 
 template<typename T>
 void TestHeap(const std::vector<TestAction> &actions) {
     std::vector<T> candidate_heaps;
-    std::vector<heaps::StlHeap<int>> correct_heaps;
+    std::vector<heaps::StlHeap<SimpleKey>> correct_heaps;
     std::vector<size_t> sizes;
     for (auto action: actions) {
         RunAction<T>(candidate_heaps, correct_heaps, sizes, action);
@@ -17,17 +18,17 @@ void TestHeap(const std::vector<TestAction> &actions) {
 }
 
 TEST_F(TestCase, BinomialHeapTest) {
-    TestHeap<heaps::BinomialHeap<int>>(actions_);
+    TestHeap<heaps::BinomialHeap<SimpleKey>>(actions_);
 }
 
 TEST_F(TestCase, LeftistHeapTest) {
-    TestHeap<heaps::LeftistHeap<int>>(actions_);
+    TestHeap<heaps::LeftistHeap<SimpleKey>>(actions_);
 }
 
 TEST_F(TestCase, SkewHeapTest) {
-    TestHeap<heaps::SkewHeap<int>>(actions_);
+    TestHeap<heaps::SkewHeap<SimpleKey>>(actions_);
 }
 
 TEST_F(TestCase, StlHeapTest) {
-    TestHeap<heaps::StlHeap<int>>(actions_);
+    TestHeap<heaps::StlHeap<SimpleKey>>(actions_);
 }

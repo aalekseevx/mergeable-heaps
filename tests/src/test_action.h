@@ -4,6 +4,7 @@
 #include <random>
 #include "gtest/gtest.h"
 #include "mergeable_heaps/exceptions.h"
+#include "simple_key.h"
 
 enum Func {
     AddHeap, Insert, GetMinimum, ExtractMinimum, Merge
@@ -13,14 +14,14 @@ class TestAction {
 public:
     constexpr static const int func_count = 5;
     Func call;
-    int key;
+    SimpleKey key;
     int index[2];
 
     TestAction() = default;
 
     TestAction(size_t heaps_cnt) {
         static std::mt19937 gen;
-        key = gen();
+        key.value = gen();
         if (heaps_cnt == 0) {
             call = Func::AddHeap;
             index[0] = index[1] = -1;
@@ -42,7 +43,8 @@ void RunAction(std::vector<T> &candidate_heaps,
 
     switch (action.call) {
         case Func::GetMinimum: {
-            int candidate_answer = -1, correct_answer = -1;
+            SimpleKey candidate_answer{};
+            SimpleKey correct_answer{};
             if (sizes[action.index[0]] > 0) {
                 ASSERT_NO_THROW(candidate_answer = candidate_heaps[action.index[0]].GetMinimum());
                 ASSERT_NO_THROW(correct_answer = correct_heaps[action.index[0]].GetMinimum());

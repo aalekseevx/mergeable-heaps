@@ -12,7 +12,7 @@ namespace heaps {
         std::multiset<Key> elements_;
         void Merge_(StlHeap <Key> &x);
     public:
-        explicit StlHeap(int key);
+        explicit StlHeap(Key key);
 
         void Insert(Key x) override;
 
@@ -28,7 +28,7 @@ namespace heaps {
 
         void Detach() override;
 
-        std::vector<int> Data();
+        std::vector<Key> Data();
     };
 
     template<class Key>
@@ -65,7 +65,7 @@ namespace heaps {
     }
 
     template<class Key>
-    StlHeap<Key>::StlHeap(int key) {
+    StlHeap<Key>::StlHeap(Key key) {
         elements_.insert(key);
     }
 
@@ -91,8 +91,8 @@ namespace heaps {
     }
 
     template<class Key>
-    std::vector<int> StlHeap<Key>::Data() {
-        return std::vector<int>(elements_.begin(), elements_.end());
+    std::vector<Key> StlHeap<Key>::Data() {
+        return std::vector<Key>(elements_.begin(), elements_.end());
     }
 }
 

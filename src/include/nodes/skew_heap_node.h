@@ -21,7 +21,7 @@ namespace heaps {
         if (root_1 == nullptr || root_2 == nullptr) {
             return root_1 == nullptr ? root_2 : root_1;
         }
-        if (root_1->key > root_2->key) {
+        if (!(root_1->key < root_2->key)) {
             std::swap(root_1, root_2);
         }
         SkewHeapNode *tmp_root = root_1->child_right;

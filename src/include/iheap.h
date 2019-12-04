@@ -2,12 +2,12 @@
 #define MERGEABLEHEAPS_IHEAP_H
 
 namespace heaps {
-    template<class T>
+    template<class Key>
     class IHeap {
     public:
-        virtual void Insert(T x) = 0;
+        virtual void Insert(Key x) = 0;
 
-        virtual T GetMinimum() = 0;
+        virtual Key GetMinimum() = 0;
 
         virtual void ExtractMinimum() = 0;
 

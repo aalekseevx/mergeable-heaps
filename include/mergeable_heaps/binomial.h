@@ -37,7 +37,7 @@ namespace heaps {
 
     public:
 
-        explicit BinomialHeap(int key);
+        explicit BinomialHeap(Key key);
 
         explicit BinomialHeap();
 
@@ -53,7 +53,7 @@ namespace heaps {
 
         bool Empty() override;
 
-        std::vector<int> Data();
+        std::vector<Key> Data();
 
         // Rule of Five functions
         ~BinomialHeap<Key>();
@@ -134,7 +134,7 @@ namespace heaps {
     }
 
     template<class Key>
-    BinomialHeap<Key>::BinomialHeap(int key) : size(1), is_temporary(false) {
+    BinomialHeap<Key>::BinomialHeap(Key key) : size(1), is_temporary(false) {
         root = new BinomialHeapNode<Key>(key, nullptr, nullptr, nullptr, 0u);
     }
 
@@ -306,8 +306,8 @@ namespace heaps {
     }
 
     template<class Key>
-    std::vector<int> BinomialHeap<Key>::Data() {
-        std::vector<int> data;
+    std::vector<Key> BinomialHeap<Key>::Data() {
+        std::vector<Key> data;
         if (root != nullptr) {
             root->CollectData(data);
         }
