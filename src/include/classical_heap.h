@@ -61,7 +61,7 @@ namespace heaps {
         if (Empty()) {
             throw EmptyHeapException();
         } else {
-            return root_->key;
+            return root_->key_;
         }
     }
 
@@ -70,8 +70,8 @@ namespace heaps {
         if (Empty()) {
             throw EmptyHeapException();
         } else {
-            NodeType *left = root_->child_left;
-            NodeType *right = root_->child_right;
+            NodeType *left = root_->child_left_;
+            NodeType *right = root_->child_right_;
             root_->Detach();
             delete root_;
             root_ = NodeType::Merge_(left, right);
@@ -167,7 +167,7 @@ namespace heaps {
     ClassicalHeap<Key, NodeType>::ClassicalHeap(Key x) {
         root_ = new NodeType();
         size_ = 1;
-        root_->key = x;
+        root_->key_ = x;
     }
 } // namespace heaps
 
