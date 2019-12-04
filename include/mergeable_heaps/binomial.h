@@ -1,69 +1,37 @@
-#ifndef MERGEABLEHEAPS_BINOMIAL_H
-#define MERGEABLEHEAPS_BINOMIAL_H
+#ifndef MERGEABLE_HEAPS_BINOMIAL_H
+#define MERGEABLE_HEAPS_BINOMIAL_H
 
-#include "iheap.h"
-#include "exceptions.h"
 #include <string>
 #include <algorithm>
+#include "iheap.h"
+#include "exceptions.h"
+#include "nodes/binomial_heap_node.h"
 
 namespace heaps {
     template<class Key>
     class BinomialHeap : public IHeap<Key> {
     private:
-        class Node {
-        public:
-            Key key;
-            Node *parent;
-            Node *sibling;
-            Node *child;
-            size_t degree;
+        BinomialHeapNode<Key> *root;
 
-            Node(Key key, Node *parent, Node *sibling, Node *child, size_t degree) :
-                    key(key), parent(parent), sibling(sibling), child(child), degree(degree) {}
-
-            static void Raise(Node *&v);
-
-            void Merge_(Node* other);
-
-            Node* Clone();
-
-            // Rule of Five functions
-            ~Node();
-
-            Node(const Node &other);
-
-            Node(Node &&other) noexcept;
-
-            Node &operator=(const Node &other);
-
-            Node &operator=(Node &&other) noexcept;
-
-            void Swap(Node &x) noexcept;
-
-            void CollectData(std::vector<int>& x);
-        };
-
-        Node *root;
-
-        // As we save memory and don't store size of the subtree in nodes,
+        // As we save memory and don't store size of the subtree in BinomialHeapNode<Key>s,
         // some heaps, created by Merge might not contain size information.
         // They will throw a RestrictedMethodException
         bool is_temporary;
         size_t size;
 
-        Node *FindMinimalNode();
+        BinomialHeapNode<Key> *FindMinimalNode();
 
-        void ExtractTopVertex(Node *v);
+        void ExtractTopVertex(BinomialHeapNode<Key> *v);
 
-        BinomialHeap<Key> CutVertex(Node *v);
+        BinomialHeap<Key> CutVertex(BinomialHeapNode<Key> *v);
 
         void Merge_(BinomialHeap<Key> &x);
 
-        Node *MergeRootsAsLists(Node *v1, Node *v2);
+        BinomialHeapNode<Key> *MergeRootsAsLists(BinomialHeapNode<Key> *v1, BinomialHeapNode<Key> *v2);
 
-        static void MakeDegreesUnique(Node *v);
+        static void MakeDegreesUnique(BinomialHeapNode<Key> *v);
 
-        explicit BinomialHeap(Node *);
+        explicit BinomialHeap(BinomialHeapNode<Key> *);
 
         void Detach() override;
 
@@ -101,100 +69,6 @@ namespace heaps {
         void Swap(BinomialHeap<Key> &x) noexcept;
     };
 
-    // Destructor
-    template<class Key>
-    BinomialHeap<Key>::Node::~Node() {
-        if (child != nullptr) {
-            delete child;
-        }
-        if (sibling != nullptr) {
-            delete sibling;
-        }
-    }
-
-    // Copy constructor
-    template<class Key>
-    BinomialHeap<Key>::Node::Node(const BinomialHeap::Node &other) : key(other.key), parent(other.parent),
-                                                                     sibling(other.sibling), child(other.child),
-                                                                     degree(other.degree) {
-        if (child != nullptr) {
-            child = new Node(*child);
-        }
-        if (sibling != nullptr) {
-            sibling = new Node(*sibling);
-        }
-    }
-
-    // TODO: use detach?
-    // Move constructor
-    template<class Key>
-    BinomialHeap<Key>::Node::Node(BinomialHeap::Node &&other) noexcept {
-        parent = sibling = child = nullptr;
-        degree = key = 0;
-        Swap(other);
-    }
-
-    // Copy assignment operator
-    template<class Key>
-    typename BinomialHeap<Key>::Node &BinomialHeap<Key>::Node::operator=(const BinomialHeap::Node &other) {
-        if (this != &other) {
-            Node tmp(other);
-            Swap(tmp);
-        }
-        return *this;
-    }
-
-    // Move assignment operator
-    template<class Key>
-    typename BinomialHeap<Key>::Node &BinomialHeap<Key>::Node::operator=(BinomialHeap::Node &&other) noexcept {
-        if (this != &other) {
-            parent = sibling = child = nullptr;
-            degree = key = 0;
-            Swap(other);
-        }
-        return *this;
-    }
-
-    template<class Key>
-    void BinomialHeap<Key>::Node::Swap(BinomialHeap::Node &x) noexcept {
-        std::swap(key, x.key);
-        std::swap(parent, x.parent);
-        std::swap(sibling, x.sibling);
-        std::swap(child, x.child);
-        std::swap(degree, x.degree);
-    }
-
-    template<class Key>
-    void BinomialHeap<Key>::Node::Raise(BinomialHeap::Node *&v) {
-        while (v->parent != nullptr) {
-            v = v->parent;
-        }
-    }
-
-    template<class Key>
-    void BinomialHeap<Key>::Node::Merge_(BinomialHeap::Node *other) {
-        other->parent = this;
-        other->sibling = child;
-        child = other;
-        ++degree;
-    }
-
-    template<class Key>
-    typename BinomialHeap<Key>::Node *BinomialHeap<Key>::Node::Clone() {
-        return new Node(key, parent, sibling, child, degree);
-    }
-
-    template<class Key>
-    void BinomialHeap<Key>::Node::CollectData(std::vector<int> &x) {
-        x.push_back(key);
-        if (child) {
-            child->CollectData(x);
-        }
-        if (sibling) {
-            sibling->CollectData(x);
-        }
-    }
-
     template<class Key>
     void BinomialHeap<Key>::Insert(Key x) {
         Merge(*new BinomialHeap<Key>(x));
@@ -206,9 +80,9 @@ namespace heaps {
     }
 
     template<class Key>
-    void BinomialHeap<Key>::ExtractTopVertex(Node *v) {
-        Node *predecessor = nullptr;
-        for (Node *i = root; i != v; i = i->sibling) {
+    void BinomialHeap<Key>::ExtractTopVertex(BinomialHeapNode<Key> *v) {
+        BinomialHeapNode<Key> *predecessor = nullptr;
+        for (BinomialHeapNode<Key> *i = root; i != v; i = i->sibling) {
             predecessor = i;
         }
         if (predecessor == nullptr) {
@@ -235,7 +109,7 @@ namespace heaps {
         }
         root = MergeRootsAsLists(root, x.root);
         MakeDegreesUnique(root);
-        Node::Raise(root);
+        BinomialHeapNode<Key>::Raise(root);
     }
 
     template<class Key>
@@ -261,7 +135,7 @@ namespace heaps {
 
     template<class Key>
     BinomialHeap<Key>::BinomialHeap(int key) : size(1), is_temporary(false) {
-        root = new Node(key, nullptr, nullptr, nullptr, 0u);
+        root = new BinomialHeapNode<Key>(key, nullptr, nullptr, nullptr, 0u);
     }
 
     template<class Key>
@@ -273,12 +147,12 @@ namespace heaps {
     }
 
     template<class Key>
-    typename BinomialHeap<Key>::Node *BinomialHeap<Key>::FindMinimalNode() {
+    BinomialHeapNode<Key> *BinomialHeap<Key>::FindMinimalNode() {
         if (root == nullptr) {
             throw EmptyHeapException();
         }
-        Node *minimal_node = root;
-        for (Node *i = root; i != nullptr; i = i->sibling) {
+        BinomialHeapNode<Key> *minimal_node = root;
+        for (BinomialHeapNode<Key> *i = root; i != nullptr; i = i->sibling) {
             if (i->key < minimal_node->key) {
                 minimal_node = i;
             }
@@ -288,17 +162,17 @@ namespace heaps {
 
     // TODO DetachSibling
     template<class Key>
-    BinomialHeap<Key> BinomialHeap<Key>::CutVertex(BinomialHeap::Node *v) {
-        Node* first = v->child;
+    BinomialHeap<Key> BinomialHeap<Key>::CutVertex(BinomialHeapNode<Key> *v) {
+        BinomialHeapNode<Key>* first = v->child;
         if (first == nullptr) {
             return BinomialHeap<Key>();
         }
-        Node* next = first->sibling;
+        BinomialHeapNode<Key>* next = first->sibling;
         first->parent = nullptr;
         first->sibling = nullptr;
         BinomialHeap<Key> new_heap(first);
-        for (Node *i = next; i != nullptr; i = next) {
-            Node* current = i;
+        for (BinomialHeapNode<Key> *i = next; i != nullptr; i = next) {
+            BinomialHeapNode<Key>* current = i;
             next = current->sibling;
             current->sibling = nullptr;
             current->parent = nullptr;
@@ -309,11 +183,10 @@ namespace heaps {
     }
 
     template<class Key>
-    typename BinomialHeap<Key>::Node *
-    BinomialHeap<Key>::MergeRootsAsLists(BinomialHeap::Node *v1, BinomialHeap::Node *v2) {
-        Node *cur[] = {v1, v2};
-        Node *head = nullptr;
-        Node *current = nullptr;
+    BinomialHeapNode<Key> *BinomialHeap<Key>::MergeRootsAsLists(BinomialHeapNode<Key> *v1, BinomialHeapNode<Key> *v2) {
+        BinomialHeapNode<Key> *cur[] = {v1, v2};
+        BinomialHeapNode<Key> *head = nullptr;
+        BinomialHeapNode<Key> *current = nullptr;
         while (cur[0] != nullptr && cur[1] != nullptr) {
             int choice = cur[0]->degree > cur[1]->degree;
             if (current != nullptr) {
@@ -336,12 +209,12 @@ namespace heaps {
     }
 
     template<class Key>
-    void BinomialHeap<Key>::MakeDegreesUnique(Node *v) {
-        Node *previous = nullptr;
+    void BinomialHeap<Key>::MakeDegreesUnique(BinomialHeapNode<Key> *v) {
+        BinomialHeapNode<Key> *previous = nullptr;
         while (v->sibling != nullptr) {
             if (v->degree == v->sibling->degree) {
                 if (v->key < v->sibling->key) {
-                    Node *next = v->sibling->sibling;
+                    BinomialHeapNode<Key> *next = v->sibling->sibling;
                     v->Merge_(v->sibling);
                     v->sibling = next;
                 } else {
@@ -373,7 +246,7 @@ namespace heaps {
     }
 
     template<class Key>
-    BinomialHeap<Key>::BinomialHeap(BinomialHeap::Node *root) : root(root), is_temporary(true), size(0) {}
+    BinomialHeap<Key>::BinomialHeap(BinomialHeapNode<Key>* root) : root(root), is_temporary(true), size(0) {}
 
     template<class Key>
     void BinomialHeap<Key>::Detach() {
@@ -391,7 +264,7 @@ namespace heaps {
 
     // Copy constructor
     template<class Key>
-    BinomialHeap<Key>::BinomialHeap(const BinomialHeap<Key> &other) : size(other.size), root(new Node(*other.root)) {
+    BinomialHeap<Key>::BinomialHeap(const BinomialHeap<Key> &other) : size(other.size), root(new BinomialHeapNode<Key>(*other.root)) {
         is_temporary = other.is_temporary;
     }
 
@@ -441,6 +314,6 @@ namespace heaps {
         std::sort(data.begin(), data.end());
         return data;
     }
-}
+} // namespace heaps
 
 #endif //MERGEABLE_HEAPS_BINOMIAL_H
