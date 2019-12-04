@@ -1,6 +1,7 @@
 #ifndef MERGEABLEHEAPS_LEFTIST_H
 #define MERGEABLEHEAPS_LEFTIST_H
 
+#include "classical_heap.h"
 #include "nodes/leftist_heap_node.h"
 
 namespace heaps {
