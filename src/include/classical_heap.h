@@ -126,7 +126,7 @@ namespace heaps {
     // Copy constructor
     template<class Key, class NodeType>
     ClassicalHeap<Key, NodeType>::ClassicalHeap(const ClassicalHeap<Key, NodeType> &other) : size(other.size),
-                                                                         root(new ClassicalHeapNode(*other.root)) {}
+                                                                         root(new ClassicalHeapNode<Key, NodeType>(*other.root)) {}
 
     // Move constructor
     template<class Key, class NodeType>
