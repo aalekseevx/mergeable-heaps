@@ -14,7 +14,7 @@ C++. Developed as homework for DIHT Algorithms' and Data structures course.
 
 The library requires
 
-- g++6
+- g++6 or clang 11
 - CMake 3.15
 
 Building is nothing special.
