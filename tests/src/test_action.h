@@ -1,25 +1,24 @@
+#ifndef MERGEABLE_HEAPS_TEST_ACTION_H
+#define MERGEABLE_HEAPS_TEST_ACTION_H
+
 #include <random>
-#include <gtest/gtest.h>
-#include "mergeable_heaps/binomial.h"
-#include "mergeable_heaps/skew.h"
-#include "mergeable_heaps/leftist.h"
-#include "stl_naive.h"
+#include "gtest/gtest.h"
 #include "mergeable_heaps/exceptions.h"
 
 enum Func {
     AddHeap, Insert, GetMinimum, ExtractMinimum, Merge
 };
 
-class Action {
+class TestAction {
 public:
     constexpr static const int func_count = 5;
     Func call;
     int key;
     int index[2];
 
-    Action() = default;
+    TestAction() = default;
 
-    Action(size_t heaps_cnt) {
+    TestAction(size_t heaps_cnt) {
         static std::mt19937 gen;
         key = gen();
         if (heaps_cnt == 0) {
@@ -34,28 +33,12 @@ public:
     }
 };
 
-class TestCase : public ::testing::Test {
-protected:
-    void SetUp() override {
-        actions_.resize(ACTIONS_CNT);
-        int heaps_cnt = 0;
-        for (auto &i: actions_) {
-            i = Action(heaps_cnt);
-            heaps_cnt += i.call == Func::AddHeap;
-        }
-    }
-
-    void TearDown() override {}
-
-    static const int ACTIONS_CNT = 100'000;
-    std::vector<Action> actions_;
-};
 
 template<class T, class H>
-void TestAction(std::vector<T> &candidate_heaps,
+void RunAction(std::vector<T> &candidate_heaps,
                 std::vector<H> &correct_heaps,
                 std::vector<size_t> &sizes,
-                Action action) {
+                TestAction action) {
 
     switch (action.call) {
         case Func::GetMinimum: {
@@ -108,33 +91,4 @@ void TestAction(std::vector<T> &candidate_heaps,
     }
 }
 
-template<typename T>
-void TestHeap(const std::vector<Action> &actions) {
-    std::vector<T> candidate_heaps;
-    std::vector<heaps::StlHeap<int>> correct_heaps;
-    std::vector<size_t> sizes;
-    for (auto action: actions) {
-        TestAction<T>(candidate_heaps, correct_heaps, sizes, action);
-    }
-}
-
-TEST_F(TestCase, BinomialHeapTest) {
-    TestHeap<heaps::BinomialHeap<int>>(actions_);
-}
-
-TEST_F(TestCase, LeftistHeapTest) {
-    TestHeap<heaps::LeftistHeap<int>>(actions_);
-}
-
-TEST_F(TestCase, SkewHeapTest) {
-    TestHeap<heaps::SkewHeap<int>>(actions_);
-}
-
-TEST_F(TestCase, StlHeapTest) {
-    TestHeap<heaps::StlHeap<int>>(actions_);
-}
-
-int main(int argc, char *argv[]) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
+#endif //MERGEABLE_HEAPS_TEST_ACTION_H

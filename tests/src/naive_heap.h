@@ -1,5 +1,5 @@
-#ifndef MERGEABLEHEAPS_STL_NAIVE_H
-#define MERGEABLEHEAPS_STL_NAIVE_H
+#ifndef MERGEABLEHEAPS_NAIVE_HEAP_H
+#define MERGEABLEHEAPS_NAIVE_HEAP_H
 
 #include "iheap.h"
 #include "mergeable_heaps/exceptions.h"
@@ -96,4 +96,4 @@ namespace heaps {
     }
 }
 
-#endif //MERGEABLEHEAPS_STL_NAIVE_H
+#endif //MERGEABLEHEAPS_NAIVE_HEAP_H
