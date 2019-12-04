@@ -4,6 +4,7 @@
 #include "iheap.h"
 #include "exceptions.h"
 #include <string>
+#include <algorithm>
 
 namespace heaps {
     template<class Key>
@@ -429,7 +430,7 @@ namespace heaps {
         if (root != nullptr) {
             root->CollectData(data);
         }
-        sort(data.begin(), data.end());
+        std::sort(data.begin(), data.end());
         return data;
     }
 }
