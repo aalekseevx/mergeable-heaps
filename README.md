@@ -1,4 +1,4 @@
-# Mergeable-heaps
+# Mergeable heaps
 
 [![Build Status](https://travis-ci.com/aalekseevx/Mergeable-heaps.svg?branch=master)](https://travis-ci.com/aalekseevx/Mergeable-heaps)
 
