@@ -28,7 +28,7 @@ Building is nothing special.
 
 ## Running the tests
 
-Tests are created with gtest framework. It will downloaded and compiled
+Tests are created with [google test](https://github.com/google/googletest/) framework. It will be downloaded and compiled
 during cmake. Run tests as follows:
 ```bash
     ./bin/RunUnitTests
