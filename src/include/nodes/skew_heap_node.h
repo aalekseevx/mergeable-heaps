@@ -4,6 +4,7 @@
 #include "classical_heap_node.h"
 
 namespace heaps {
+    // One node of the skew heap, specifies ClassicalHeapNode.
     template<class Key>
     class SkewHeapNode : public ClassicalHeapNode<Key, SkewHeapNode<Key>> {
     public:

@@ -5,18 +5,24 @@
 
 namespace heaps {
 
+    // One node of the Leftist Heap
+    // Specifies the ClassicalHeapNode class
     template<class Key>
     class LeftistHeapNode : public ClassicalHeapNode<Key, LeftistHeapNode<Key>> {
     public:
+        // Rank is length of the shortest path from node to the leaf.
         size_t rank_;
         using Base = ClassicalHeapNode<Key, LeftistHeapNode<Key>>;
 
+        // Primitive constructors
         LeftistHeapNode();
 
         LeftistHeapNode(Key key, LeftistHeapNode<Key> *child_left, LeftistHeapNode<Key> *child_right, size_t rank);
 
+        // Method updates rank_ value by updating it using the children value.
         void UpdateRank();
 
+        // Merges 2 subtrees and returns the result. Steals resources from root_1, root_2
         static LeftistHeapNode *Merge_(LeftistHeapNode *root_1, LeftistHeapNode *root_2);
     };
 

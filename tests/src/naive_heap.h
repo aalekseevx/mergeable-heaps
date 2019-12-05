@@ -6,6 +6,7 @@
 
 namespace heaps {
 
+    // Implementation of heaps interface using std::multiset.
     template<class Key>
     class StlHeap : public HeapInterface<Key> {
     private:

@@ -3,6 +3,7 @@
 
 #include "test_action.h"
 
+// Large sequence of actions used for testing
 class TestCase : public ::testing::Test {
 protected:
     void SetUp() override {

@@ -1,6 +1,7 @@
 #ifndef MERGEABLE_HEAPS_SIMPLE_KEY_H
 #define MERGEABLE_HEAPS_SIMPLE_KEY_H
 
+// Simple key to store in the heap for testing
 class SimpleKey {
 public:
     int value_{};

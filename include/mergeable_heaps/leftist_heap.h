@@ -5,10 +5,12 @@
 #include "nodes/leftist_heap_node.h"
 
 namespace heaps {
+    // Leftist Heap implementation. Key is the type of data stored
     template<class Key=int>
     class LeftistHeap : public ClassicalHeap<Key, LeftistHeapNode<Key>> {
         using Base = ClassicalHeap<Key, LeftistHeapNode<Key>>;
     public:
+
         explicit LeftistHeap(Key key);
     };
 

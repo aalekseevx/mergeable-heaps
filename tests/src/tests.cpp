@@ -7,6 +7,7 @@
 #include "naive_heap.h"
 #include "simple_key.h"
 
+// Tests the whole set of action on the given heap.
 template<typename T>
 void TestHeap(const std::vector<TestAction> &actions) {
     std::vector<T> candidate_heaps;
@@ -16,6 +17,8 @@ void TestHeap(const std::vector<TestAction> &actions) {
         RunAction<T>(candidate_heaps, correct_heaps, sizes, action);
     }
 }
+
+// Declaring 4 tests for every type of the heap.
 
 TEST_F(TestCase, BinomialHeapTest) {
     TestHeap<heaps::BinomialHeap<SimpleKey>>(actions_);

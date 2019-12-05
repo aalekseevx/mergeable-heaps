@@ -6,48 +6,75 @@
 #include "nodes/classical_heap_node.h"
 
 namespace heaps {
+    // Classical Heap implementation. Key is the type of data stored
+    // Leftist and Skew Heaps are based in the ClassicalHeap
     template<class Key, class NodeType>
-    class ClassicalHeap : public HeapInterface<Key> {
+    class ClassicalHeap :public HeapInterface<Key> {
     protected:
+        // Link to the root of the tree with the minimal degree.
+        // If there is none, nullptr.
         NodeType *root_;
-        
+        // Number of items in the heap
         size_t size_;
 
+        // Methods merges heap "x" to *this heap.
+        // heap "x" becomes empty.
         void Merge_(ClassicalHeap &x);
 
     public:
+        // Constructor of the empty heap
         ClassicalHeap();
 
+        // Constructor of the one-item heap
         explicit ClassicalHeap(Key x);
 
+        // Inserts an item into the heap
         void Insert(Key x) override;
 
+        // Return the minimal item in heap.
+        // Throws EmptyHeapException, if there is none
         Key GetMinimum() override;
 
+        // Extracts minimal item from the heap.
+        // Throws EmptyHeapException, if there is none
         void ExtractMinimum() override;
 
+        // Merges an abstract heap into *this.
+        // Throws WrongHeapTypeException, if x is not a BinomialHeap
         void Merge(HeapInterface<Key> &x) override;
 
+        // Return number of items in the heap
         size_t Size() override;
 
+        // Checks if the heap is empty
         bool Empty() override;
 
+        // Detaches heap from its nodes without deleting them
+        // Now, it's user's responsibility to free node's memory.
         void Detach() override;
 
         //
         // Rule of Five functions
         //
-        
+
+        // Destructor. Destructs the heap with all it's nodes
+        // Unless they are detached.
         ~ClassicalHeap<Key, NodeType>();
 
+        // Copy constructor. Creates the copy of the heap and all it's nodes
         ClassicalHeap<Key, NodeType>(const ClassicalHeap<Key, NodeType> &other);
 
+        // Move constructor. Creates the copy of the heap by stealing resources.
+        // Other heap is left as newly initialized.
         ClassicalHeap<Key, NodeType>(ClassicalHeap<Key, NodeType> &&other) noexcept;
 
+        // Copy assignment operator
         ClassicalHeap<Key, NodeType> &operator=(const ClassicalHeap<Key, NodeType> &other);
 
+        // Move assignment operator
         ClassicalHeap<Key, NodeType> &operator=(ClassicalHeap<Key, NodeType> &&other) noexcept;
 
+        // Swap function for "Copy and Swap" idiom
         void Swap(ClassicalHeap<Key, NodeType> &x) noexcept;
     };
 

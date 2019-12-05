@@ -10,6 +10,9 @@ enum Func {
     AddHeap, Insert, GetMinimum, ExtractMinimum, Merge
 };
 
+// One action that happens to the vector of heaps
+// Consists of Func calls with randomized arguments.
+
 class TestAction {
 public:
     constexpr static const int func_count_ = 5;
@@ -34,6 +37,9 @@ public:
     }
 };
 
+// Function that performs the action on the candidate heap array
+// and on the correct (stl) heaps and performs all the
+// necessary checks.
 
 template<class T, class H>
 void RunAction(std::vector<T> &candidate_heaps,
