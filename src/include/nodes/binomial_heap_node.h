@@ -3,7 +3,7 @@
 
 namespace heaps {
     // One node of the Binomial Heap. Key is the type of data stored
-    template <class Key>
+    template<class Key>
     class BinomialHeapNode {
     public:
         // Stored Data
@@ -16,7 +16,8 @@ namespace heaps {
         size_t degree_;
 
         // Simple constructor
-        BinomialHeapNode(Key key, BinomialHeapNode *parent, BinomialHeapNode *sibling, BinomialHeapNode *child, size_t degree) :
+        BinomialHeapNode(Key key, BinomialHeapNode *parent, BinomialHeapNode *sibling, BinomialHeapNode *child,
+                         size_t degree) :
                 key_(key), parent_(parent), sibling_(sibling), child_(child), degree_(degree) {}
 
         // Static function, which raises vertex v, i.e.
@@ -24,10 +25,10 @@ namespace heaps {
         static void Raise(BinomialHeapNode *&v);
 
         // Merges two trees in a simple way. *this is the new root.
-        void Merge_(BinomialHeapNode* other);
+        void Merge_(BinomialHeapNode *other);
 
         // Makes a clone of the Node, while not copying the children.
-        BinomialHeapNode* Clone();
+        BinomialHeapNode *Clone();
 
         //
         // Rule of Five functions
@@ -53,7 +54,7 @@ namespace heaps {
         void Swap(BinomialHeapNode &x) noexcept;
 
         // Recursively scarabs data from the vertex and its children to the std::vector
-        void CollectData(std::vector<Key>& x);
+        void CollectData(std::vector<Key> &x);
 
         // Detaches the vertex from its neighbours, while
         // not destroying them.
@@ -71,8 +72,10 @@ namespace heaps {
     }
 
     template<class Key>
-    BinomialHeapNode<Key>::BinomialHeapNode(const BinomialHeapNode<Key> &other) : key_(other.key_), parent_(other.parent_),
-                                                                                  sibling_(other.sibling_), child_(other.child_),
+    BinomialHeapNode<Key>::BinomialHeapNode(const BinomialHeapNode<Key> &other) : key_(other.key_),
+                                                                                  parent_(other.parent_),
+                                                                                  sibling_(other.sibling_),
+                                                                                  child_(other.child_),
                                                                                   degree_(other.degree_) {
         if (child_ != nullptr) {
             child_ = new BinomialHeapNode<Key>(*child_);

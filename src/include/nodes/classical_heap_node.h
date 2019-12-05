@@ -15,6 +15,7 @@ namespace heaps {
 
         // Simple constructors
         ClassicalHeapNode();
+
         ClassicalHeapNode(Key key, Derived *child_left, Derived *child_right);
 
         // Detaches the node from all the others.

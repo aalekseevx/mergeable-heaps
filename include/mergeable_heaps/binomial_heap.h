@@ -163,7 +163,7 @@ namespace heaps {
             throw SelfHeapMergeException();
         }
         try {
-            auto& casted = dynamic_cast<BinomialHeap<Key> &>(x);
+            auto &casted = dynamic_cast<BinomialHeap<Key> &>(x);
             Merge_(casted);
             // Trying to update size.
             // If merged heap was temporary, we can't rely on the size field again.
@@ -208,16 +208,16 @@ namespace heaps {
     // TODO DetachSibling
     template<class Key>
     BinomialHeap<Key> BinomialHeap<Key>::CutVertex(BinomialHeapNode<Key> *v) {
-        BinomialHeapNode<Key>* first = v->child_;
+        BinomialHeapNode<Key> *first = v->child_;
         if (first == nullptr) {
             return BinomialHeap<Key>();
         }
-        BinomialHeapNode<Key>* next = first->sibling_;
+        BinomialHeapNode<Key> *next = first->sibling_;
         first->parent_ = nullptr;
         first->sibling_ = nullptr;
         BinomialHeap<Key> new_heap(first);
         for (BinomialHeapNode<Key> *i = next; i != nullptr; i = next) {
-            BinomialHeapNode<Key>* current = i;
+            BinomialHeapNode<Key> *current = i;
             next = current->sibling_;
             current->sibling_ = nullptr;
             current->parent_ = nullptr;
@@ -292,7 +292,7 @@ namespace heaps {
     }
 
     template<class Key>
-    BinomialHeap<Key>::BinomialHeap(BinomialHeapNode<Key>* root) : root_(root), is_temporary_(true), size_(0) {}
+    BinomialHeap<Key>::BinomialHeap(BinomialHeapNode<Key> *root) : root_(root), is_temporary_(true), size_(0) {}
 
     template<class Key>
     void BinomialHeap<Key>::Detach() {
@@ -310,7 +310,8 @@ namespace heaps {
 
     // Copy constructor
     template<class Key>
-    BinomialHeap<Key>::BinomialHeap(const BinomialHeap<Key> &other) : size_(other.size_), root_(new BinomialHeapNode<Key>(*other.root_)) {
+    BinomialHeap<Key>::BinomialHeap(const BinomialHeap<Key> &other) : size_(other.size_),
+                                                                      root_(new BinomialHeapNode<Key>(*other.root_)) {
         is_temporary_ = other.is_temporary_;
     }
 

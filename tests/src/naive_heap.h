@@ -11,7 +11,9 @@ namespace heaps {
     class StlHeap : public HeapInterface<Key> {
     private:
         std::multiset<Key> elements_;
-        void Merge_(StlHeap <Key> &x);
+
+        void Merge_(StlHeap<Key> &x);
+
     public:
         explicit StlHeap(Key key);
 

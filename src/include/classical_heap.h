@@ -9,7 +9,7 @@ namespace heaps {
     // Classical Heap implementation. Key is the type of data stored
     // Leftist and Skew Heaps are based in the ClassicalHeap
     template<class Key, class NodeType>
-    class ClassicalHeap :public HeapInterface<Key> {
+    class ClassicalHeap : public HeapInterface<Key> {
     protected:
         // Link to the root of the tree with the minimal degree.
         // If there is none, nullptr.
@@ -153,7 +153,8 @@ namespace heaps {
     // Copy constructor
     template<class Key, class NodeType>
     ClassicalHeap<Key, NodeType>::ClassicalHeap(const ClassicalHeap<Key, NodeType> &other) : size_(other.size_),
-                                                                                             root_(new ClassicalHeapNode<Key, NodeType>(*other.root_)) {}
+                                                                                             root_(new ClassicalHeapNode<Key, NodeType>(
+                                                                                                     *other.root_)) {}
 
     // Move constructor
     template<class Key, class NodeType>
@@ -175,7 +176,8 @@ namespace heaps {
 
     // Move assignment operator
     template<class Key, class NodeType>
-    ClassicalHeap<Key, NodeType> &ClassicalHeap<Key, NodeType>::operator=(ClassicalHeap<Key, NodeType> &&other) noexcept {
+    ClassicalHeap<Key, NodeType> &
+    ClassicalHeap<Key, NodeType>::operator=(ClassicalHeap<Key, NodeType> &&other) noexcept {
         if (this != &other) {
             root_ = nullptr;
             size_ = 0;
