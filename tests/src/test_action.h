@@ -52,49 +52,49 @@ void RunAction(std::vector<T> &candidate_heaps,
             SimpleKey candidate_answer{};
             SimpleKey correct_answer{};
             if (sizes[action.index_[0]] > 0) {
-                ASSERT_NO_THROW(candidate_answer = candidate_heaps[action.index_[0]].GetMinimum());
-                ASSERT_NO_THROW(correct_answer = correct_heaps[action.index_[0]].GetMinimum());
-                ASSERT_EQ(candidate_answer, correct_answer);
+                EXPECT_NO_THROW(candidate_answer = candidate_heaps[action.index_[0]].GetMinimum());
+                EXPECT_NO_THROW(correct_answer = correct_heaps[action.index_[0]].GetMinimum());
+                EXPECT_EQ(candidate_answer, correct_answer);
             } else {
-                ASSERT_THROW(candidate_answer = candidate_heaps[action.index_[0]].GetMinimum(),
+                EXPECT_THROW(candidate_answer = candidate_heaps[action.index_[0]].GetMinimum(),
                              heaps::EmptyHeapException);
-                ASSERT_THROW(correct_answer = correct_heaps[action.index_[0]].GetMinimum(), heaps::EmptyHeapException);
+                EXPECT_THROW(correct_answer = correct_heaps[action.index_[0]].GetMinimum(), heaps::EmptyHeapException);
             }
             break;
         }
         case Func::AddHeap: {
-            ASSERT_NO_THROW(candidate_heaps.emplace_back(action.key_));
-            ASSERT_NO_THROW(correct_heaps.emplace_back(action.key_));
+            EXPECT_NO_THROW(candidate_heaps.emplace_back(action.key_));
+            EXPECT_NO_THROW(correct_heaps.emplace_back(action.key_));
             sizes.emplace_back(1);
             break;
         }
         case Func::ExtractMinimum: {
             if (sizes[action.index_[0]] > 0) {
-                ASSERT_NO_THROW(candidate_heaps[action.index_[0]].ExtractMinimum());
-                ASSERT_NO_THROW(correct_heaps[action.index_[0]].ExtractMinimum());
+                EXPECT_NO_THROW(candidate_heaps[action.index_[0]].ExtractMinimum());
+                EXPECT_NO_THROW(correct_heaps[action.index_[0]].ExtractMinimum());
                 --sizes[action.index_[0]];
             } else {
-                ASSERT_THROW(candidate_heaps[action.index_[0]].ExtractMinimum(), heaps::EmptyHeapException);
-                ASSERT_THROW(correct_heaps[action.index_[0]].ExtractMinimum(), heaps::EmptyHeapException);
+                EXPECT_THROW(candidate_heaps[action.index_[0]].ExtractMinimum(), heaps::EmptyHeapException);
+                EXPECT_THROW(correct_heaps[action.index_[0]].ExtractMinimum(), heaps::EmptyHeapException);
             }
             break;
         }
         case Func::Insert: {
-            ASSERT_NO_THROW(candidate_heaps[action.index_[0]].Insert(action.key_));
-            ASSERT_NO_THROW(correct_heaps[action.index_[0]].Insert(action.key_));
+            EXPECT_NO_THROW(candidate_heaps[action.index_[0]].Insert(action.key_));
+            EXPECT_NO_THROW(correct_heaps[action.index_[0]].Insert(action.key_));
             ++sizes[action.index_[0]];
             break;
         }
         case Func::Merge: {
             if (action.index_[0] != action.index_[1]) {
-                ASSERT_NO_THROW(candidate_heaps[action.index_[0]].Merge(candidate_heaps[action.index_[1]]));
-                ASSERT_NO_THROW(correct_heaps[action.index_[0]].Merge(correct_heaps[action.index_[1]]));
+                EXPECT_NO_THROW(candidate_heaps[action.index_[0]].Merge(candidate_heaps[action.index_[1]]));
+                EXPECT_NO_THROW(correct_heaps[action.index_[0]].Merge(correct_heaps[action.index_[1]]));
                 sizes[action.index_[0]] += sizes[action.index_[1]];
                 sizes[action.index_[1]] = 0;
             } else {
-                ASSERT_THROW(candidate_heaps[action.index_[0]].Merge(candidate_heaps[action.index_[1]]),
+                EXPECT_THROW(candidate_heaps[action.index_[0]].Merge(candidate_heaps[action.index_[1]]),
                              heaps::SelfHeapMergeException);
-                ASSERT_THROW(correct_heaps[action.index_[0]].Merge(correct_heaps[action.index_[1]]),
+                EXPECT_THROW(correct_heaps[action.index_[0]].Merge(correct_heaps[action.index_[1]]),
                              heaps::SelfHeapMergeException);
             }
             break;
