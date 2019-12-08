@@ -219,12 +219,15 @@ namespace heaps {
         first->parent_ = nullptr;
         first->sibling_ = nullptr;
         BinomialHeap<Key> new_heap(first);
+        BinomialHeapNode<Key>* rightmost = new_heap.root_;
         for (BinomialHeapNode<Key> *i = next; i != nullptr; i = next) {
             BinomialHeapNode<Key> *current = i;
             next = current->sibling_;
             current->sibling_ = nullptr;
             current->parent_ = nullptr;
-            new_heap.Merge(*new BinomialHeap(current));
+
+            rightmost->sibling_ = current;
+            rightmost = current;
         }
         v->Detach();
         delete v;
