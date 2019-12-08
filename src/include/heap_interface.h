@@ -28,7 +28,13 @@ namespace heaps {
         // Detaches the heap from its nodes.
         // Nodes are not deleted.
         virtual void Detach() = 0;
+
+        // Virtual destructor
+        virtual ~HeapInterface() = 0;
     };
+
+    template <class Key>
+    HeapInterface<Key>::~HeapInterface() = default;
 } // namespace heaps
 
 #endif // MERGEABLE_HEAPS_HEAP_INTERFACE_H
