@@ -80,7 +80,9 @@ namespace heaps {
 
     template<class Key, class NodeType>
     void ClassicalHeap<Key, NodeType>::Insert(Key x) {
-        Merge(*new ClassicalHeap(x));
+        ClassicalHeap<Key, NodeType> tmp(x);
+        Merge(tmp);
+        // Now tmp is empty and will be destructed.
     }
 
     template<class Key, class NodeType>

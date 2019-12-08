@@ -116,7 +116,9 @@ namespace heaps {
 
     template<class Key>
     void BinomialHeap<Key>::Insert(Key x) {
-        Merge(*new BinomialHeap<Key>(x));
+        BinomialHeap<Key> tmp(x);
+        Merge(tmp);
+        // Now tmp is empty and will be destructed.
     }
 
     template<class Key>
