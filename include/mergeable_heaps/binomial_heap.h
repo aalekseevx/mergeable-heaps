@@ -137,7 +137,8 @@ namespace heaps {
         } else {
             predecessor->sibling_ = v->sibling_;
         }
-        Merge(*new BinomialHeap<Key>(CutVertex(v)));
+        BinomialHeap<Key> tmp(std::move(CutVertex(v)));
+        Merge(tmp);
         // Decreasing size and disabling restricting
         size_ -= 1;
         is_temporary_ = false;
